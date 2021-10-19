@@ -16,8 +16,11 @@ namespace Social_network.Controllers
 
         // GET all action
         [HttpGet]
-        public ActionResult<List<Pizza>> GetAll() =>
-            PizzaService.GetAll();
+        // public ActionResult<List<Pizza>> GetAll() =>
+        //     PizzaService.GetAll();
+        public ActionResult<List<Pizza>> GetAll() {
+            return PizzaService.GetAll();
+        }
 
         // GET by Id action
         [HttpGet("{id}")]
