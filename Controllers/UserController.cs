@@ -8,49 +8,49 @@ namespace Social_network.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PizzaController : ControllerBase
+    public class UserController : ControllerBase
     {
-        public PizzaController()
+        public UserController()
         {
         }
 
         // GET all action
         [HttpGet]
-        public ActionResult<List<Pizza>> GetAll() =>
-            PizzaService.GetAll();
+        public ActionResult<List<User>> GetAll() =>
+            UserService.GetAll();
 
         // GET by Id action
         [HttpGet("{id}")]
-        public ActionResult<Pizza> Get(int id)
+        public ActionResult<User> Get(int id)
         {
-            var pizza = PizzaService.Get(id);
+            var user = UserService.Get(id);
 
-            if(pizza == null)
+            if(user == null)
                 return NotFound();
 
-            return pizza;
+            return user;
         }
 
         // POST action
         [HttpPost]
-        public IActionResult Create(Pizza pizza)
+        public IActionResult Create(User user)
         {            
-            PizzaService.Add(pizza);
-            return CreatedAtAction(nameof(Create), new { id = pizza.Id }, pizza);
+            UserService.Add(user);
+            return CreatedAtAction(nameof(Create), new { id = user.Id }, user);
         }
 
         // PUT action
         [HttpPut("{id}")]
-        public IActionResult Update(int id, Pizza pizza)
+        public IActionResult Update(int id, User user)
         {
-            if (id != pizza.Id)
+            if (id != user.Id)
                 return BadRequest();
 
-            var existingPizza = PizzaService.Get(id);
-            if(existingPizza is null)
+            var existingUser = UserService.Get(id);
+            if(existingUser is null)
                 return NotFound();
 
-            PizzaService.Update(pizza);           
+            UserService.Update(user);           
 
             return NoContent();
         }
@@ -59,12 +59,12 @@ namespace Social_network.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var pizza = PizzaService.Get(id);
+            var user = UserService.Get(id);
 
-            if (pizza is null)
+            if (user is null)
                 return NotFound();
 
-            PizzaService.Delete(id);
+            UserService.Delete(id);
 
             return NoContent();
         }

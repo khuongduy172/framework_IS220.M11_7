@@ -1,4 +1,4 @@
-namespace ContosoPizza.Models
+namespace Social_network.Models
 {
     public class Pizza
     {

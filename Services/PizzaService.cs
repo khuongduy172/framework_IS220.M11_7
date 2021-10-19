@@ -1,8 +1,8 @@
-using ContosoPizza.Models;
+using Social_network.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ContosoPizza.Services
+namespace Social_network.Services
 {
     public static class PizzaService
     {
