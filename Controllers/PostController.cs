@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Social_network.Models;
 using Social_network.Services;
@@ -34,7 +33,7 @@ namespace Social_network.Controllers
         [HttpPost]
         public IActionResult Create (Post post) {
             PostService.Create(post);
-            return Ok();
+            return Ok("ok");
         }
 
         // PUT action
@@ -46,7 +45,7 @@ namespace Social_network.Controllers
             }
 
             PostService.Update(post);
-            return Ok();
+            return Ok("ok");
         }
 
         // DELETE action
@@ -60,7 +59,7 @@ namespace Social_network.Controllers
 
             PostService.Delete(id);
 
-            return Ok();
+            return Ok("ok");
         }
     }
 }
