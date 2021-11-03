@@ -30,17 +30,17 @@ create table User_MXH (
 create table Friend (
 	user_id int,
 	friend_id int,
-	constraint PK_userId_friendId primary key (user_id, friend_id),
+	constraint PK_Friend primary key (user_id, friend_id),
 )
 
 create table Follow (
 	user_id int,
 	follower_id int,
-	constraint PK_userId_follower_id primary key (user_id, follower_id),
+	constraint PK_Follow primary key (user_id, follower_id),
 )
 
 create table Message_MXH (
-	id int constraint PK_Message_MXH_Id primary key,
+	id int constraint PK_Message_MXH primary key,
 	sender_id int,
 	receiver_id int,
 	content ntext,
@@ -48,7 +48,7 @@ create table Message_MXH (
 )
 
 create table Status_MXH (
-	id int constraint PK_status primary key,
+	id int constraint PK_Status_MXH primary key,
 	owner_id int,
 	content ntext,
 	create_at datetime,
@@ -56,7 +56,7 @@ create table Status_MXH (
 )
 
 create table Status_image (
-	id_image nvarchar(255) constraint PK_id_image primary key,
+	id_image nvarchar(255) constraint PK_Status_image primary key,
 	status_id int,
 )
 
@@ -91,7 +91,7 @@ create table Page_MXH (
 create table User_like_page (
 	page_id int,
 	user_id int,
-	constraint PK_pageId_userId primary key (page_id, user_id),
+	constraint PK_User_like_page primary key (page_id, user_id),
 )
 
 create table Page_post (
@@ -102,7 +102,7 @@ create table Page_post (
 )
 
 create table React_page_post (
-	id int CONSTRAINT PK_react_page_post PRIMARY KEY,
+	id int CONSTRAINT PK_React_page_post PRIMARY KEY,
 	post_id int,
 	type_react NVARCHAR(100),
 	user_id int,
@@ -118,7 +118,7 @@ create table Comment_page_post (
 )
 
 create table Page_post_image (
-	id_image nvarchar(255) constraint PK_page_post_image primary key,
+	id_image nvarchar(255) constraint PK_Page_post_image primary key,
 	post_id int,
 )
 
