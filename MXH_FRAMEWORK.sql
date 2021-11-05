@@ -11,7 +11,7 @@ DROP DATABASE MXH
 */
 
 create table User_MXH (
-	id int constraint PK_User_MXH primary key not null,
+	id int IDENTITY(1,1) constraint PK_User_MXH primary key not null,
 	username varchar(225) not null,
 	user_password varchar(225) not null,
 	email varchar(225) not null,
@@ -40,15 +40,15 @@ create table Follow (
 )
 
 create table Message_MXH (
-	id int constraint PK_Message_MXH primary key,
 	sender_id int,
 	receiver_id int,
 	content ntext,
 	create_at datetime,
+	constraint PK_Message_MXH primary key(sender_id, receiver_id),
 )
 
 create table Status_MXH (
-	id int constraint PK_Status_MXH primary key,
+	id int IDENTITY(1,1) constraint PK_Status_MXH primary key,
 	owner_id int,
 	content ntext,
 	create_at datetime,
@@ -61,23 +61,23 @@ create table Status_image (
 )
 
 create table React_status (
-	id int constraint PK_React_status primary key,
 	status_id int,
 	type_react nvarchar(100),
 	user_id int,
+	constraint PK_React_status primary key(status_id, user_id),
 )
 
 create table Comment_status (
-	id int constraint PK_Comment_status primary key,
 	status_id int,
 	user_id int,
 	content ntext,
 	create_at datetime,
 	update_at datetime,
+	constraint PK_Comment_status primary key(status_id, user_id),
 )
 
 create table Page_MXH (
-	id int constraint PK_Page_MXH primary key,
+	id int IDENTITY(1,1) constraint PK_Page_MXH primary key,
 	owner_id int,
 	description_MXH nvarchar(225),
 	name_page nvarchar(225),
@@ -95,26 +95,26 @@ create table User_like_page (
 )
 
 create table Page_post (
-	 id int constraint PK_Page_post primary key,
+	 id int IDENTITY(1,1) constraint PK_Page_post primary key,
 	 page_id int,
 	 content ntext,
 	 create_at datetime,
 )
 
 create table React_page_post (
-	id int CONSTRAINT PK_React_page_post PRIMARY KEY,
 	post_id int,
 	type_react NVARCHAR(100),
 	user_id int,
+	CONSTRAINT PK_React_page_post PRIMARY KEY(post_id, user_id),
 )
 
 create table Comment_page_post (
-	id int constraint PK_Comment_page_post primary key,
 	post_id int,
 	user_id int,
 	content ntext,
 	create_at datetime,
 	update_at datetime,
+	constraint PK_Comment_page_post primary key(post_id, user_id),
 )
 
 create table Page_post_image (

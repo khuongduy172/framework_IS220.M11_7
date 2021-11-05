@@ -1,15 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-#nullable disable
 
-namespace social_network.Models
+namespace Social_network.Models
 {
-    public partial class PagePostImage
+    public class PagePostImage
     {
-        public string IdImage { get; set; }
-        public int? PostId { get; set; }
-
-        public virtual PagePost Post { get; set; }
+        [Key]
+        [Column("id_image")]
+        public string imageId { get; set; }
+        [Column("post_id")]
+        public int postId { get; set; }
+        
+        [ForeignKey("postId")]
+        public PagePost PagePost { get; set; }
+        
     }
 }

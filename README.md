@@ -5,6 +5,8 @@
 
 `git checkout -b <đặt tên branch hợp lý>`
 
+ví dụ: authentication-tuanle
+
 sau đó code trên branch vừa tạo
 
 `git add .`
@@ -16,5 +18,12 @@ sau đó code trên branch vừa tạo
 - code xong nhớ viết docs swager
 - đây chỉ là backend viết api cho frontend
 - frontend sẽ có 1 repo khác
+
+
+# Cài package 
+
+`dotnet restore`
+
+# Generate Model
 
 `dotnet ef dbcontext scaffold "Data Source=localhost; Initial Catalog = MXH; Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer -o Models -c MXHContext`

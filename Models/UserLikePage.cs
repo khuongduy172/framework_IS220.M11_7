@@ -1,16 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-#nullable disable
 
-namespace social_network.Models
+namespace Social_network.Models
 {
-    public partial class UserLikePage
+    public class UserLikePage
     {
-        public int PageId { get; set; }
-        public int UserId { get; set; }
+        [Key]
+        [Column("page_id")]
+        public int pageId { get; set; }
+        [Key]
+        [Column("user_id")]
+        public int userId { get; set; }
 
-        public virtual PageMxh Page { get; set; }
-        public virtual UserMxh User { get; set; }
+        [ForeignKey("userId")]
+        public UserMxh User { get; set; }
+        [ForeignKey("pageId")]
+        public PageMxh Page { get; set; }
+        
     }
 }
