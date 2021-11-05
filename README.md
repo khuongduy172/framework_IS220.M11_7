@@ -5,6 +5,8 @@
 
 `git checkout -b <đặt tên branch hợp lý>`
 
+ví dụ: authentication-tuanle
+
 sau đó code trên branch vừa tạo
 
 `git add .`
