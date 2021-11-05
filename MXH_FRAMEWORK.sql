@@ -40,11 +40,11 @@ create table Follow (
 )
 
 create table Message_MXH (
-	id int constraint PK_Message_MXH primary key,
 	sender_id int,
 	receiver_id int,
 	content ntext,
 	create_at datetime,
+	constraint PK_Message_MXH primary key(sender_id, receiver_id),
 )
 
 create table Status_MXH (
@@ -61,19 +61,19 @@ create table Status_image (
 )
 
 create table React_status (
-	id int constraint PK_React_status primary key,
 	status_id int,
 	type_react nvarchar(100),
 	user_id int,
+	constraint PK_React_status primary key(status_id, user_id),
 )
 
 create table Comment_status (
-	id int constraint PK_Comment_status primary key,
 	status_id int,
 	user_id int,
 	content ntext,
 	create_at datetime,
 	update_at datetime,
+	constraint PK_Comment_status primary key(status_id, user_id),
 )
 
 create table Page_MXH (
@@ -102,19 +102,19 @@ create table Page_post (
 )
 
 create table React_page_post (
-	id int CONSTRAINT PK_React_page_post PRIMARY KEY,
 	post_id int,
 	type_react NVARCHAR(100),
 	user_id int,
+	CONSTRAINT PK_React_page_post PRIMARY KEY(post_id, user_id),
 )
 
 create table Comment_page_post (
-	id int constraint PK_Comment_page_post primary key,
 	post_id int,
 	user_id int,
 	content ntext,
 	create_at datetime,
 	update_at datetime,
+	constraint PK_Comment_page_post primary key(post_id, user_id),
 )
 
 create table Page_post_image (
