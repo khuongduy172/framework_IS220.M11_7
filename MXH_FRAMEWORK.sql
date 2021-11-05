@@ -11,7 +11,7 @@ DROP DATABASE MXH
 */
 
 create table User_MXH (
-	id int constraint PK_User_MXH primary key not null,
+	id int IDENTITY(1,1) constraint PK_User_MXH primary key not null,
 	username varchar(225) not null,
 	user_password varchar(225) not null,
 	email varchar(225) not null,
@@ -48,7 +48,7 @@ create table Message_MXH (
 )
 
 create table Status_MXH (
-	id int constraint PK_Status_MXH primary key,
+	id int IDENTITY(1,1) constraint PK_Status_MXH primary key,
 	owner_id int,
 	content ntext,
 	create_at datetime,
@@ -77,7 +77,7 @@ create table Comment_status (
 )
 
 create table Page_MXH (
-	id int constraint PK_Page_MXH primary key,
+	id int IDENTITY(1,1) constraint PK_Page_MXH primary key,
 	owner_id int,
 	description_MXH nvarchar(225),
 	name_page nvarchar(225),
@@ -95,7 +95,7 @@ create table User_like_page (
 )
 
 create table Page_post (
-	 id int constraint PK_Page_post primary key,
+	 id int IDENTITY(1,1) constraint PK_Page_post primary key,
 	 page_id int,
 	 content ntext,
 	 create_at datetime,
