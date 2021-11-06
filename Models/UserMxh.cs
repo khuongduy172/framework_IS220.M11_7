@@ -42,7 +42,6 @@ namespace Social_network.Models
         public ICollection <CommentStatus> CommentStatuses {get;set;}
         public Icollection <CommentPagePost> CommentPagePosts{get;set;}
         public ICollection <ReactPagePost> ReactPagePosts{get;set;}
-        public ICollection <PageMxh> PageMxhs{get;set;}
         public ICollection <UserLikePage> UserLikePages{get;set;}
         
     }
