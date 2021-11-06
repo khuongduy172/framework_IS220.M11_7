@@ -12,9 +12,9 @@ namespace Social_network.Models
         [Column("receiver_id")]
         public int receiverId { get; set; }
         [Column("[content]")]
-        public string content { get; set; }
+        public string? content { get; set; }
         [Column("creat_at")]
-        public DateTime createAt { get; set; } 
+        public DateTime? createAt { get; set; } 
         [ForeignKey("sender_id")]
         public UserMxh User {get;set;}
         [ForeignKey("receiver_id")]
