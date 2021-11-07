@@ -10,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+
+using Social_network.Data;
 
 namespace Social_network
 {
@@ -27,6 +30,8 @@ namespace Social_network
         {
 
             services.AddControllers();
+            services.AddDbContext<MXHContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "social_network", Version = "v1" });

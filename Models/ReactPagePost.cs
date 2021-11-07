@@ -14,7 +14,8 @@ namespace Social_network.Models
         [Column("user_id")]
         public int userId { get; set; }
         [Column("type_react")]
-        public string? typeReact { get; set; }
+        public string typeReact { get; set; }
+
 
         [ForeignKey("userId")]
         public UserMxh User { get; set; }

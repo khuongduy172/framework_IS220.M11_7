@@ -1,10 +1,11 @@
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 
 namespace Social_network.Models
 {
-  public class ReactStatus
+  public class CommentStatus
   {
     [Key]
     [Column("status_id")]
@@ -15,13 +16,14 @@ namespace Social_network.Models
     public int userId {get; set;}
 
     [Column("create_at")]
-    public DateTime? createAt {get; set;}
+    public DateTime createAt {get; set;}
 
     [Column("upadate_at")]
-    public DateTime? updateAt {get; set;}
+    public DateTime updateAt {get; set;}
 
     [Column("[content]")]
-    public string? content {get; set;}
+    public string content {get; set;}
+
 
     [ForeignKey("statusId")]
     public StatusMxh Status { get; set; }

@@ -13,6 +13,7 @@ namespace Social_network.Models
         [Column("user_id")]
         public int userId { get; set; }
 
+
         [ForeignKey("userId")]
         public UserMxh User { get; set; }
         [ForeignKey("pageId")]

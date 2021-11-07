@@ -9,13 +9,15 @@ namespace Social_network.Models
     {
         [Key]
         [Column("id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         [Column("page_id")]
-        public int? pageId { get; set; }
+        public int pageId { get; set; }
         [Column("content")]
         public string? content { get; set; }
         [Column("create_at")]
-        public DateTime? createAt { get; set; }
+        public DateTime createAt { get; set; }
+
 
         [ForeignKey("pageId")]
         public PageMxh Page { get; set; }

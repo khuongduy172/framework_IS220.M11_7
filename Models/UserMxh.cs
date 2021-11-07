@@ -1,12 +1,14 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+
 namespace Social_network.Models
 {
     public class UserMxh
     {
-        [Key]
         [Column("id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         [Column("username")]
         public string userName { get; set; }
@@ -31,18 +33,22 @@ namespace Social_network.Models
         [Column("is_deleted")]
         public bool? isDeleted { get; set; }
         [Column("delete_at")]
-        public DateTime? deletedAt { get; set; }
+        public DateTime deletedAt { get; set; }
         [Column("create_at")]
-        public DateTime? createdAt { get; set; }
-        public ICollection<Follow> Follows {get; set;}
-        public ICollection<Friend> Friends {get; set;}
-        public ICollection<MessageMxh> MessageMxhs {get;set;}
-        public ICollection <ReactStatus> ReactStatuses{get;set;}
-        public ICollection <StatusMxh> StatusMxhs{get;set;}
-        public ICollection <CommentStatus> CommentStatuses {get;set;}
-        public Icollection <CommentPagePost> CommentPagePosts{get;set;}
-        public ICollection <ReactPagePost> ReactPagePosts{get;set;}
-        public ICollection <UserLikePage> UserLikePages{get;set;}
+        public DateTime createdAt { get; set; }
+        public ICollection<Follow> FollowedUsers { get; set; }
+        public ICollection<Follow> Followers { get; set; }
+        public ICollection<Friend> FriendsOfUsers { get; set; }
+        public ICollection<Friend> UserHasFriends { get; set; }
+        public ICollection<MessageMxh> MessagesFrom { get; set; }
+        public ICollection<MessageMxh> MessagesTo { get; set; }
+        public ICollection<ReactStatus> ReactStatuses { get; set; }
+        public ICollection<StatusMxh> StatusMxhs { get; set; }
+        public ICollection<CommentStatus> CommentStatuses { get; set; }
+        public ICollection<CommentPagePost> CommentPagePosts { get; set; }
+        public ICollection<ReactPagePost> ReactPagePosts { get; set; }
+        public ICollection<UserLikePage> UserLikePages { get; set; }
+        public ICollection<PageMxh> PageMxhs { get; set; }
         
     }
 }
