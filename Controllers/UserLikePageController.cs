@@ -26,5 +26,14 @@ namespace Social_network.Controllers
         {
             return await _context.UserLikePages.ToListAsync();
         }
+
+        [HttpPost]
+        public async Task<ActionResult<UserLikePage>> PostUserMxh(UserLikePage userLikePage)
+        {
+            _context.UserLikePages.Add(userLikePage);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("PostUserMxh", new { userLikePage.pageId, userLikePage.userId});
+        }
     }
 }
