@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Social_network.Data;
 using Social_network.Models;
 
-namespace social_network.Controllers
+namespace Social_network.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -25,14 +25,14 @@ namespace social_network.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserMxh>>> GetUserMxh()
         {
-            return await _context.UserMxh.ToListAsync();
+            return await _context.UserMxhs.ToListAsync();
         }
 
         // GET: api/UserMxhs/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UserMxh>> GetUserMxh(int id)
         {
-            var userMxh = await _context.UserMxh.FindAsync(id);
+            var userMxh = await _context.UserMxhs.FindAsync(id);
 
             if (userMxh == null)
             {
@@ -78,7 +78,7 @@ namespace social_network.Controllers
         [HttpPost]
         public async Task<ActionResult<UserMxh>> PostUserMxh(UserMxh userMxh)
         {
-            _context.UserMxh.Add(userMxh);
+            _context.UserMxhs.Add(userMxh);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUserMxh", new { id = userMxh.id }, userMxh);
@@ -88,13 +88,13 @@ namespace social_network.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserMxh(int id)
         {
-            var userMxh = await _context.UserMxh.FindAsync(id);
+            var userMxh = await _context.UserMxhs.FindAsync(id);
             if (userMxh == null)
             {
                 return NotFound();
             }
 
-            _context.UserMxh.Remove(userMxh);
+            _context.UserMxhs.Remove(userMxh);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -102,7 +102,7 @@ namespace social_network.Controllers
 
         private bool UserMxhExists(int id)
         {
-            return _context.UserMxh.Any(e => e.id == id);
+            return _context.UserMxhs.Any(e => e.id == id);
         }
     }
 }

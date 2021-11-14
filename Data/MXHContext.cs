@@ -17,8 +17,20 @@ namespace Social_network.Data
 
         }
 
-        public DbSet<UserLikePage> UserLikePages { get; set; }
+        public DbSet<CommentPagePost> CommentPagePosts { get; set; }
+        public DbSet<CommentStatus> CommentStatuss { get; set; }
+        public DbSet<Follow> Follows { get; set; }
+        public DbSet<Friend> Friends { get; set; }
+        public DbSet<MessageMxh> MessageMxhs { get; set; }
+        public DbSet<PageMxh> PageMxhs { get; set; }
+        public DbSet<PagePost> PagePosts { get; set; }
         public DbSet<PagePostImage> PagePostImages { get; set; }
+        public DbSet<ReactPagePost> ReactPagePosts { get; set; }
+        public DbSet<ReactStatus> ReactStatuses { get; set; }
+        public DbSet<StatusImage> StatusImages { get; set; }
+        public DbSet<StatusMxh> StatusMxhs { get; set; }
+        public DbSet<UserLikePage> UserLikePages { get; set; }
+        public DbSet<UserMxh> UserMxhs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
             modelBuilder.Entity<CommentPagePost>().ToTable("Comment_page_post").HasKey(c => new { c.postId, c.userId});
@@ -65,9 +77,10 @@ namespace Social_network.Data
             modelBuilder.Entity<ReactPagePost>().ToTable("React_page_post").HasKey(c => new {c.postId, c.userId});
             modelBuilder.Entity<ReactStatus>().ToTable("React_status").HasKey(c => new {c.statusId, c.userId});
             modelBuilder.Entity<StatusImage>().ToTable("Status_image").HasKey(c => c.idImage);
+            modelBuilder.Entity<StatusMxh>().ToTable("Status_MXH").HasKey(c => c.statusId);
             modelBuilder.Entity<UserLikePage>().ToTable("User_like_page").HasKey(c => new {c.pageId, c.userId});
             modelBuilder.Entity<UserMxh>().ToTable("User_MXH").HasKey(c => c.id);
         }
-        public DbSet<Social_network.Models.UserMxh> UserMxh { get; set; }
+        
     }
 }
