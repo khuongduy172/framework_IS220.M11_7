@@ -35,5 +35,20 @@ namespace Social_network.Controllers
 
             return CreatedAtAction("PostUserMxh", new { userLikePage.pageId, userLikePage.userId});
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUserLikePage( [FromQuery] int pageId, [FromQuery] int userId)
+        {
+            var like = await _context.UserLikePages.FindAsync(pageId, userId);
+            if (like == null)
+            {
+                return NotFound();
+            }
+
+            _context.UserLikePages.Remove(like);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
