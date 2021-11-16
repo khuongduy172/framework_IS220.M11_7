@@ -21,7 +21,7 @@ namespace Social_network.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Friend>>> GetUserMxh()
+        public async Task<ActionResult<IEnumerable<Friend>>> GetAllMessageMxh()
         {
             return await _context.Friends.ToListAsync();
         }
@@ -32,7 +32,7 @@ namespace Social_network.Controllers
             _context.MessageMxhs.Add(message);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUserMxh", new { message.senderId, message.receiverId},message);
+            return CreatedAtAction("GetAllMessageMxh", new { message.senderId, message.receiverId},message);
         }
 
         [HttpDelete]

@@ -22,7 +22,7 @@ namespace Social_network.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Follow>>> GetUserMxh()
+        public async Task<ActionResult<IEnumerable<Follow>>> GetAllFollow()
         {
             return await _context.Follows.ToListAsync();
         }
@@ -33,7 +33,7 @@ namespace Social_network.Controllers
             _context.Follows.Add(follow);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUserMxh", new { follow.userId, follow.followerId},follow);
+            return CreatedAtAction("GetAllFollow", new { follow.userId, follow.followerId},follow);
         }
 
         [HttpDelete]
