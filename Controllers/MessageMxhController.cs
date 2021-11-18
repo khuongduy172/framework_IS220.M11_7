@@ -27,12 +27,13 @@ namespace Social_network.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<MessageMxh>> PostUserMxh(MessageMxh message)
+        public async Task<ActionResult<MessageMxh>> PostMessageMxh(MessageMxh message)
         {
             _context.MessageMxhs.Add(message);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAllMessageMxh", new { message.senderId, message.receiverId},message);
+            // return CreatedAtAction("GetAllMessageMxh", new { message.senderId, message.receiverId},message);
+            return NoContent();
         }
 
         [HttpDelete]
