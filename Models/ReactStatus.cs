@@ -15,7 +15,7 @@ namespace Social_network.Models
     public int userId {get; set;}
 
     [Column("react_type")]
-    public string? reactType {get; set;}
+    public string reactType {get; set;}
 
     [ForeignKey("statusId")]
     public StatusMxh Status { get; set; }

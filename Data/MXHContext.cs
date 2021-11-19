@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore;
 // using Microsoft.EntityFrameworkCore.Metadata;
 // using System.Configuration;
@@ -28,8 +28,53 @@ namespace Social_network.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
-            modelBuilder.Entity<UserLikePage>().ToTable("User_like_page");
-            modelBuilder.Entity<PagePostImage>().ToTable("Page_post_image");
+            modelBuilder.Entity<CommentPagePost>().ToTable("Comment_page_post").HasKey(c => new { c.postId, c.userId});
+            modelBuilder.Entity<CommentStatus>().ToTable("Comment_status").HasKey(c => new {c.statusId, c.userId});
+            modelBuilder.Entity<Follow>(entity => {
+                entity.ToTable("Follow");
+                entity.HasKey(c => new {c.userId, c.followerId});
+
+                entity.HasOne(e => e.FollowedUser)
+                        .WithMany(e => e.Followers)
+                        .HasForeignKey(e => e.userId);
+                
+                entity.HasOne(e => e.Follower)
+                        .WithMany(e => e.FollowedUsers)
+                        .HasForeignKey(e => e.followerId);
+
+            });
+
+            modelBuilder.Entity<Friend>(entity => {
+                entity.ToTable("Friend");
+                entity.HasKey(c => new {c.friendId, c.userId});
+
+                entity.HasOne(e => e.User)
+                        .WithMany(e => e.FriendsOfUsers)
+                        .HasForeignKey(e => e.userId);
+                entity.HasOne(e => e.userFriend)
+                        .WithMany(e => e.UserHasFriends)
+                        .HasForeignKey(e => e.friendId);
+            });
+            modelBuilder.Entity<MessageMxh>(entity => {
+                entity.ToTable("Message_MXH");
+                entity.HasKey(c => new {c.receiverId, c.senderId});
+
+                entity.HasOne(e => e.UserReceiver)
+                        .WithMany(e => e.MessagesFrom)
+                        .HasForeignKey(e => e.receiverId);
+                entity.HasOne(e => e.UserSend)
+                        .WithMany(e => e.MessagesTo)
+                        .HasForeignKey(e => e.senderId);
+            });
+            modelBuilder.Entity<PageMxh>().ToTable("Page_MXH").HasKey(c => c.id);
+            modelBuilder.Entity<PagePost>().ToTable("Page_post").HasKey(c => c.id);
+            modelBuilder.Entity<PagePostImage>().ToTable("Page_post_image").HasKey(c => c.imageId);
+            modelBuilder.Entity<ReactPagePost>().ToTable("React_page_post").HasKey(c => new {c.postId, c.userId});
+            modelBuilder.Entity<ReactStatus>().ToTable("React_status").HasKey(c => new {c.statusId, c.userId});
+            modelBuilder.Entity<StatusImage>().ToTable("Status_image").HasKey(c => c.idImage);
+            modelBuilder.Entity<UserLikePage>().ToTable("User_like_page").HasKey(c => new {c.pageId, c.userId});
+            modelBuilder.Entity<UserMxh>().ToTable("User_MXH").HasKey(c => c.id);
         }
+        public DbSet<Social_network.Models.UserMxh> UserMxh { get; set; }
     }
 }
