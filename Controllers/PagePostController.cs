@@ -1,70 +1,76 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Social_network.Data;
 using Social_network.Models;
-using Social_network.Services;
 
 namespace Social_network.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("[controller]")]
     public class PagePostController : ControllerBase
     {
-        public PagePostController()
+        private readonly MXHContext _context;
+
+        public PagePostController(MXHContext context)
         {
+            _context = context;
         }
 
-        // GET all action
         [HttpGet]
-        public ActionResult<List<PagePost>> GetAll() =>
-            PagePostService.GetAll();
-
-        // GET by Id action
-        [HttpGet("{id}")]
-        public ActionResult<PagePost> Get(int id)
+        public async Task<ActionResult<IEnumerable<PagePost>>> GetAllPagePost([FromQuery] int id)
         {
-            var pagepost = PagePostService.Get(id);
-
-            if(pagepost == null)
-                return NotFound();
-
-            return pagepost;
+            var result = await _context.PagePosts.Where(p => p.id == id).ToListAsync();
+            return result;
         }
 
-        // POST action
         [HttpPost]
-        public IActionResult Create(PagePost pagepost)
-        {            
-            PagePostService.Add(pagepost);
-            return CreatedAtAction(nameof(Create), new { id = pagepost.Id }, pagepost);
-        }
-
-        // PUT action
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, PagePost pagepost)
+        public async Task<ActionResult<PagePost>> AddPagePost(PagePost pagePost)
         {
-            if (id != pagepost.Id)
-                return BadRequest();
-
-            var existingPagepost = PagePostService.Get(id);
-            if(existingPagepost is null)
-                return NotFound();
-
-            PagePostService.Update(pagepost);           
+            _context.PagePosts.Add(pagePost);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        // DELETE action
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+
+        [HttpPut]
+        public async Task<IActionResult> PutPagePost( [FromQuery] int id, [FromQuery] int pageId, PagePost pagePost)
         {
-            var pagepost = PagePostService.Get(id);
+            if (id != pagePost.id && pageId != pagePost.pageId)
+            {
+                return BadRequest();
+            }
 
-            if (pagepost is null)
+            var check = await _context.PagePosts.FindAsync(id, pageId);
+            if (check == null)
+            {
                 return NotFound();
+            }
 
-            PagePostService.Delete(id);
+            _context.Entry(pagePost).State = EntityState.Modified;
+
+            return NoContent();
+        }
+
+        
+
+        [HttpDelete]
+        public async Task<IActionResult> DeletePagePost([FromQuery] int id, [FromQuery] int pageId)
+        {
+            var pagePost = await _context.PagePosts.FindAsync(id, pageId);
+            if (pagePost == null)
+            {
+                return NotFound();
+            }
+
+            _context.PagePosts.Remove(pagePost);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
