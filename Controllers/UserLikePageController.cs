@@ -22,9 +22,33 @@ namespace Social_network.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserLikePage>>> GetUserMxh()
+        public async Task<ActionResult<IEnumerable<UserLikePage>>> GetUserLikePage([FromQuery] int pageId)
         {
-            return await _context.UserLikePages.ToListAsync();
+            return await _context.UserLikePages.Where(p => p.pageId == pageId).ToListAsync();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<UserLikePage>> UserLikePage(UserLikePage userLikePage)
+        {
+            _context.UserLikePages.Add(userLikePage);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("UserLikePage", new { userLikePage.pageId, userLikePage.userId});
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUserLikePage( [FromQuery] int pageId, [FromQuery] int userId)
+        {
+            var like = await _context.UserLikePages.FindAsync(pageId, userId);
+            if (like == null)
+            {
+                return NotFound();
+            }
+
+            _context.UserLikePages.Remove(like);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }
