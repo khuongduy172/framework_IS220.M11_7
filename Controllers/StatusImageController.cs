@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Social_network.Data;
 using Social_network.Models;
 
@@ -12,6 +13,7 @@ namespace Social_network.Controllers
 
   public class StatusImageController : ControllerBase
   {
+    private readonly MXHContext _context;
     public StatusImageController(MXHContext context)
     {
       var _context = context;
@@ -26,7 +28,7 @@ namespace Social_network.Controllers
     [HttpPost]
     public async Task<ActionResult<StatusImage>> StatusImage(StatusImage statusImage)
     {
-      _context.statusImages.Add(statusImage);
+      _context.StatusImages.Add(statusImage);
       await _context.SaveChangesAsync();
       return NoContent();
     }

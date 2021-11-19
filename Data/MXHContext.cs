@@ -18,7 +18,7 @@ namespace Social_network.Data
         }
 
         public DbSet<CommentPagePost> CommentPagePosts { get; set; }
-        public DbSet<CommentStatus> CommentStatuss { get; set; }
+        public DbSet<CommentStatus> CommentStatuses { get; set; }
         public DbSet<Follow> Follows { get; set; }
         public DbSet<Friend> Friends { get; set; }
         public DbSet<MessageMxh> MessageMxhs { get; set; }
