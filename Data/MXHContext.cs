@@ -19,6 +19,13 @@ namespace Social_network.Data
 
         public DbSet<UserLikePage> UserLikePages { get; set; }
         public DbSet<PagePostImage> PagePostImages { get; set; }
+        public DbSet<StatusMxh> StatusMxhs { get; set; }
+        public DbSet<ReactStatus> ReactStatuses { get; set; }
+        public DbSet<CommentStatus> CommentStatuses { get; set; }
+        public DbSet<StatuImages> StatusImages { get; set; }
+
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
             modelBuilder.Entity<UserLikePage>().ToTable("User_like_page");

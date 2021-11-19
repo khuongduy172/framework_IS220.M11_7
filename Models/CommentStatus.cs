@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Social_network.Models
 {
-  public class ReactStatus
+  public class CommentStatus
   {
     [Key]
     [Column("status_id")]
