@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Social_network.Data;
 using Social_network.Models;
@@ -21,11 +22,20 @@ namespace Social_network.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Friend>>> GetAllMessageMxh()
+        // public async Task<ActionResult<IEnumerable<Friend>>> GetAllMessageMxh()
+        // {
+        //     return await _context.Friends.ToListAsync();
+        // }
+        public async Task<ActionResult<IEnumerable<MessageMxh>>> GetAllMessageOfUser([FromQuery] int id)
         {
-            return await _context.Friends.ToListAsync();
+            var userid = new SqlParameter("id", id);
+            var sql = $"SELECT id, receiver_id " +
+                $"FROM User_MXH U, MessageMxh MM " +
+                $"WHERE U.id = MM.receiver_id " +
+                $"AND U.id = @id;";
+            var result = await _context.MessageMxhs.FromSqlRaw(sql, userid).ToListAsync();
+            return result;
         }
-
         [HttpPost]
         public async Task<ActionResult<MessageMxh>> PostMessageMxh(MessageMxh message)
         {
