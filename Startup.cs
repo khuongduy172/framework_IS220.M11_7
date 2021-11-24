@@ -13,6 +13,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 using Social_network.Data;
+using social_network.Hubs;
 
 namespace Social_network
 {
@@ -36,6 +37,7 @@ namespace Social_network
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "social_network", Version = "v1" });
             });
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +57,11 @@ namespace Social_network
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseEndpoints(route =>
+            {
+                route.MapHub<ChatHub>("/Home/Index");
             });
         }
     }
