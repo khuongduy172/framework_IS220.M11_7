@@ -9,17 +9,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Social_network.Models;
 using Social_network.Data;
+using BC = BCrypt.Net.BCrypt;
  
 namespace Social_network.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TokenController : ControllerBase
+    public class LoginController : ControllerBase
     {
         public IConfiguration _configuration;
         private readonly MXHContext _context;
  
-        public TokenController(IConfiguration config, MXHContext context)
+        public LoginController(IConfiguration config, MXHContext context)
         {
             _configuration = config;
             _context = context;
@@ -53,7 +54,7 @@ namespace Social_network.Controllers
  
                     var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Audience"], claims, expires: DateTime.UtcNow.AddDays(1), signingCredentials: signIn);
  
-                    return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+                    return Ok("Bearer " + new JwtSecurityTokenHandler().WriteToken(token).ToString());
                 }
                 else
                 {
@@ -68,7 +69,13 @@ namespace Social_network.Controllers
  
         private async Task<UserMxh> GetUser(string username, string password)
         {
-            return await _context.UserMxhs.FirstOrDefaultAsync(u => u.userName == username && u.userPassword == password);
+            var user = await _context.UserMxhs.FirstOrDefaultAsync(u => u.userName == username);
+
+            if (BC.Verify(password, user.userPassword)){
+                return user;
+            } else {
+                return null;
+            }
         }
     }
 }

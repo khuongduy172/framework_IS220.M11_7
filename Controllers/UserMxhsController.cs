@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Social_network.Data;
 using Social_network.Models;
+using BC = BCrypt.Net.BCrypt;
 
 namespace Social_network.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserMxhsController : ControllerBase
@@ -80,10 +80,15 @@ namespace Social_network.Controllers
         [HttpPost]
         public async Task<ActionResult<UserMxh>> PostUserMxh(UserMxh userMxh)
         {
-            _context.UserMxhs.Add(userMxh);
+            var hashedPassword = BC.HashPassword(userMxh.userPassword);
+            UserMxh newUser = new UserMxh();
+            newUser = userMxh;
+            newUser.userPassword = hashedPassword;
+
+            _context.UserMxhs.Add(newUser);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUserMxh", new { id = userMxh.id }, userMxh);
+            return CreatedAtAction("GetUserMxh", new { id = newUser.id }, newUser);
         }
 
         // DELETE: api/UserMxhs/5
@@ -95,7 +100,6 @@ namespace Social_network.Controllers
             {
                 return NotFound();
             }
-
             _context.UserMxhs.Remove(userMxh);
             await _context.SaveChangesAsync();
 
