@@ -37,6 +37,9 @@ namespace Social_network
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "social_network", Version = "v1" });
             });
+            //services.AddDefaultIdentity<AppUser>()
+            //    .AddDefaultUI(UIFramework.Boostrap4)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddSignalR();
         }
 

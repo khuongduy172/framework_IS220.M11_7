@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using social_network.Data;
@@ -12,6 +13,7 @@ namespace social_network.Controllers
 {
     public class HomeController : Controller
     {
+        [Authorize]
         public readonly ApplicationDbContext _context;
         public readonly UserManager<AppUser> _userManager;
         public HomeController(ApplicationDbContext context, UserManager<AppUser> userManager)
@@ -22,7 +24,10 @@ namespace social_network.Controllers
         public async Task<IActionResult> Index()
         {
             var currentUser = await _userManager.GetUserAsync(User);
-            ViewBag.CurrentUserName = currentUser.UserName;
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.CurrentUserName = currentUser.UserName;
+            }
             var messages = await _context.Messages.ToListAsync();
             return View();
         } 
