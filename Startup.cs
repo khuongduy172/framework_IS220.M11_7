@@ -34,6 +34,13 @@ namespace Social_network
         {
 
             services.AddControllers();
+
+            services.AddCors(option => {
+                option.AddPolicy(name: "allowedcors", builder => {
+                    builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+                });
+            });
+
             services.AddDbContext<MXHContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option => 
@@ -89,6 +96,8 @@ namespace Social_network
             }
 
             app.UseRouting();
+
+            app.UseCors("allowedcors");
 
             app.UseAuthentication();
 
