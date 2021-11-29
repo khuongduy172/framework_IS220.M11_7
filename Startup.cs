@@ -36,6 +36,7 @@ namespace Social_network
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "social_network", Version = "v1" });
             });
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
