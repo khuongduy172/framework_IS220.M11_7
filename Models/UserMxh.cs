@@ -33,7 +33,7 @@ namespace Social_network.Models
         [Column("is_deleted")]
         public bool? isDeleted { get; set; }
         [Column("delete_at")]
-        public DateTime deletedAt { get; set; }
+        public DateTime? deletedAt { get; set; }
         [Column("create_at")]
         public DateTime createdAt { get; set; }
         public ICollection<Follow> FollowedUsers { get; set; }

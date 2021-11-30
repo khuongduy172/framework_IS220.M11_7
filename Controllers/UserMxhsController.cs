@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -25,9 +26,26 @@ namespace Social_network.Controllers
 
         // GET: api/UserMxhs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserMxh>>> GetUserMxh()
+        public async Task<IQueryable> GetUserMxh()
         {
-            return await _context.UserMxhs.ToListAsync();
+            var query = from u in _context.UserMxhs
+                        where u.isDeleted != true
+                        select new {
+                            u.id,
+                            u.userName,
+                            u.email,
+                            u.phone,
+                            u.firstName,
+                            u.lastName,
+                            u.avatar,
+                            u.coverImage,
+                            u.dateOfBirth,
+                            u.createdAt,
+                            u.deletedAt,
+                            u.isDeleted,
+                            u.gender,
+                        };
+            return query;
         }
 
         // GET: api/UserMxhs/5
@@ -84,7 +102,7 @@ namespace Social_network.Controllers
             UserMxh newUser = new UserMxh();
             newUser = userMxh;
             newUser.userPassword = hashedPassword;
-
+            Console.WriteLine(newUser);
             _context.UserMxhs.Add(newUser);
             await _context.SaveChangesAsync();
 

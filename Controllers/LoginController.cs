@@ -30,7 +30,7 @@ namespace Social_network.Controllers
         public async Task<IActionResult> Post( [FromBody] Login login)
         {
  
-            if (login.username != null && login.password != null)
+            if (login.username != null && login.password != null && login.username != "" && login.password != "")
             {
                 var user = await GetUser(login.username, login.password);
  
@@ -54,23 +54,37 @@ namespace Social_network.Controllers
  
                     var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Audience"], claims, expires: DateTime.UtcNow.AddDays(1), signingCredentials: signIn);
  
-                    return Ok("Bearer " + new JwtSecurityTokenHandler().WriteToken(token).ToString());
+                    var result = new {
+                        auth = true,
+                        token = "Bearer " + new JwtSecurityTokenHandler().WriteToken(token).ToString(),
+                    };
+                    return Ok(result);
                 }
                 else
                 {
-                    return BadRequest("Invalid credentials");
+                    var result = new {
+                        auth = false,
+                        message = "Wrong username/password!",
+                    };
+                    return Ok(result);
                 }
             }
             else
             {
-                return BadRequest();
+                 var result = new {
+                    auth = false,
+                    message = "Can't send empty value!",
+                };
+                return Ok(result);
             }
         }
  
         private async Task<UserMxh> GetUser(string username, string password)
         {
             var user = await _context.UserMxhs.FirstOrDefaultAsync(u => u.userName == username);
-
+            if(user == null) {
+                return null;
+            }
             if (BC.Verify(password, user.userPassword)){
                 return user;
             } else {
