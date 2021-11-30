@@ -15,16 +15,16 @@ namespace Social_network.Models
     [Column("owner_id")]
     public int ownerId {get; set;}
 
-    [Column("[content]")]
-    public string? content {get; set;}
+    [Column("content")]
+    public string content {get; set;}
 
     [Column("create_at")]
     public DateTime createAt {get; set;}
 
-    [Column("upadate_at")]
+    [Column("update_at")]
     public DateTime updateAt {get; set;}
 
-    [ForeignKey("userId")]
+    [ForeignKey("ownerId")]
     public UserMxh User { get; set; }
 
     public ICollection<ReactStatus> ReactStatuses {get; set;}
