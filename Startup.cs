@@ -13,6 +13,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 using Social_network.Data;
+using social_network.Controllers;
 
 namespace Social_network
 {
@@ -37,6 +38,16 @@ namespace Social_network
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "social_network", Version = "v1" });
             });
             services.AddSignalR();
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+            {
+                builder
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowAnyOrigin()
+                    .AllowCredentials()
+                    .WithOrigins("http://localhost:4200");
+            }));
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +58,13 @@ namespace Social_network
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "social_network v1"));
+
             }
+            app.UseCors("CorsPolicy");
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<NotifyHub>("/notify");
+            });
 
             app.UseRouting();
 
