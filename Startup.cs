@@ -109,10 +109,9 @@ namespace Social_network
 
             }
             app.UseCors("CorsPolicy");
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapHub<NotifyHub>("/notify");
-            });
+            //app.UseEndpoints(endpoints =>
+            //{
+            //});
 
             app.UseRouting();
 
@@ -124,6 +123,7 @@ namespace Social_network
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<NotifyHub>("/notify");
                 endpoints.MapControllers();
             });
         }
