@@ -8,7 +8,6 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Social_network.Data;
 using Social_network.Models;
-using Social_network.Services;
 namespace Social_network.Controllers
 {
     [Route("api/[controller]")]

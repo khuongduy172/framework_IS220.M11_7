@@ -12,6 +12,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 using Social_network.Data;
 using social_network.Controllers;
 
@@ -31,11 +35,55 @@ namespace Social_network
         {
 
             services.AddControllers();
+
+            services.AddCors(option => {
+                option.AddPolicy(name: "allowedcors", builder => {
+                    builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+                    builder.WithOrigins("https://social-network-is220.vercel.app").AllowAnyHeader().AllowAnyMethod();
+                });
+            });
+
             services.AddDbContext<MXHContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option => 
+            {
+                option.RequireHttpsMetadata = false;
+                option.SaveToken = true;
+                option.TokenValidationParameters = new TokenValidationParameters() 
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = false,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                };
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "social_network", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()  
+                {  
+                    Name = "Authorization",  
+                    Type = SecuritySchemeType.ApiKey,  
+                    Scheme = "Bearer",  
+                    BearerFormat = "JWT",  
+                    In = ParameterLocation.Header,  
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",  
+                });  
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement  
+                {  
+                    {  
+                          new OpenApiSecurityScheme  
+                            {  
+                                Reference = new OpenApiReference  
+                                {  
+                                    Type = ReferenceType.SecurityScheme,  
+                                    Id = "Bearer"  
+                                }  
+                            },  
+                            new string[] {}  
+  
+                    }  
+                });
             });
             services.AddSignalR();
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
@@ -67,6 +115,10 @@ namespace Social_network
             });
 
             app.UseRouting();
+
+            app.UseCors("allowedcors");
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

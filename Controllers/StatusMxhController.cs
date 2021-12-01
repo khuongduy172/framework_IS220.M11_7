@@ -29,7 +29,7 @@ namespace Social_network.Controllers
     }
 
     [HttpPost]
-    public async Task<ActionResult<StatusMxh>> StatusMxh(StatusMxh statusMxh)
+    public async Task<ActionResult> StatusMxh([FromBody]StatusMxh statusMxh)
     {
       
       _context.StatusMxhs.Add(statusMxh);
