@@ -47,7 +47,7 @@ namespace Social_network
                     .AllowCredentials()
                     .WithOrigins("http://localhost:4200");
             }));
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +61,10 @@ namespace Social_network
 
             }
             app.UseCors("CorsPolicy");
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<NotifyHub>("/notify");
+            });
 
             app.UseRouting();
 
@@ -69,7 +73,6 @@ namespace Social_network
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<NotifyHub>("/notify");
             });
         }
     }
