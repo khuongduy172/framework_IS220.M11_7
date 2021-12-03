@@ -1,3 +1,5 @@
+# Link deploy FE: https://social-network-is220.vercel.app/
+
 # Quy trình code một tính năng
 `git checkout local`
 
@@ -27,3 +29,5 @@ sau đó code trên branch vừa tạo
 # Generate Model
 
 `dotnet ef dbcontext scaffold "Data Source=localhost; Initial Catalog = MXH; Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer -o Models -c MXHContext`
+
+
