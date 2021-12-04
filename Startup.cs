@@ -18,6 +18,7 @@ using System.Text;
 
 using Social_network.Data;
 using social_network.Controllers;
+using social_network.Hubs;
 
 namespace Social_network
 {
@@ -36,11 +37,19 @@ namespace Social_network
 
             services.AddControllers();
 
-            services.AddCors(option => {
-                option.AddPolicy(name: "allowedcors", builder => {
-                    builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
-                    builder.WithOrigins("https://social-network-is220.vercel.app").AllowAnyHeader().AllowAnyMethod();
+            services.AddCors(option => 
+            {
+                option.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
                 });
+                //option.AddPolicy(name: "allowedcors", builder => {
+                //    builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+                //    builder.WithOrigins("https://social-network-is220.vercel.app").AllowAnyHeader().AllowAnyMethod();
+                //});
             });
 
             services.AddDbContext<MXHContext>(options =>
@@ -86,15 +95,15 @@ namespace Social_network
                 });
             });
             services.AddSignalR();
-            services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
-            {
-                builder
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowAnyOrigin()
-                    .AllowCredentials()
-                    .WithOrigins("http://localhost:4200");
-            }));
+            //services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+            //{
+            //    builder
+            //        .AllowAnyMethod()
+            //        .AllowAnyHeader()
+            //        .AllowAnyOrigin()
+            //        .AllowCredentials()
+            //        .WithOrigins("http://localhost:4200");
+            //}));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -108,14 +117,14 @@ namespace Social_network
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "social_network v1"));
 
             }
-            app.UseCors("CorsPolicy");
+            //app.UseCors("CorsPolicy");
             //app.UseEndpoints(endpoints =>
             //{
             //});
 
             app.UseRouting();
 
-            app.UseCors("allowedcors");
+            app.UseCors();
 
             app.UseAuthentication();
 
@@ -123,8 +132,8 @@ namespace Social_network
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<NotifyHub>("/notify");
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chat");
             });
         }
     }
