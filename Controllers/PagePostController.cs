@@ -23,10 +23,26 @@ namespace Social_network.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PagePost>>> GetAllPagePost([FromQuery] int id)
+        public async Task<ActionResult<IEnumerable<PagePost>>> GetAllPagePostById([FromQuery] int id)
         {
-            var result = await _context.PagePosts.Where(p => p.id == id).ToListAsync();
+            var result = await _context.PagePosts.Where(i => i.id == id).ToListAsync();
             return result;
+        }
+        [HttpGet]
+        [Route("getPagePost")]
+        public async Task<IQueryable> GetAllPagePost()
+        {
+            //var id = new SqlParameter("id", Id);
+            //var sql = $"select content, pp.create_at, last_name " +
+            //          $"from Page_post pp, Page_MXH pmxh, User_MXH umxh " +
+            //          $"where pp.page_id = pmxh.id and umxh.id = pmxh.owner_id"; 
+            //var result = await _context.PagePosts.FromSqlRaw(sql).ToListAsync();
+            //return result;
+            var query = from pp in _context.PagePosts
+                        join pmxh in _context.PageMxhs on pp.pageId equals pmxh.id 
+                        join umxh in _context.UserMxhs on pmxh.ownerId equals umxh.id 
+                        select new { pp.content, pp.createAt, umxh.lastName};
+            return query;
         }
 
         [HttpPost]
