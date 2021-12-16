@@ -26,7 +26,7 @@ namespace Social_network.Controllers
 
         // GET: api/UserMxhs
         [HttpGet]
-        public async Task<IQueryable> GetUserMxh()
+        public IQueryable GetUserMxh()
         {
             var query = from u in _context.UserMxhs
                         where u.isDeleted != true
