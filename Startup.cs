@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 using Social_network.Data;
+using Social_network.Hubs;
 
 namespace Social_network
 {
@@ -35,10 +36,12 @@ namespace Social_network
 
             services.AddControllers();
 
+            services.AddSignalR();
+
             services.AddCors(option => {
                 option.AddPolicy(name: "allowedcors", builder => {
-                    builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
-                    builder.WithOrigins("https://social-network-is220.vercel.app").AllowAnyHeader().AllowAnyMethod();
+                    builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                    builder.WithOrigins("https://social-network-is220.vercel.app").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                 });
             });
 
@@ -107,6 +110,7 @@ namespace Social_network
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chat");
             });
         }
     }
