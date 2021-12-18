@@ -5,12 +5,6 @@ namespace Social_network.Models
 {
     public class Notification
     {
-        public enum Type
-        {
-            Comment,
-            React,
-            Friend,
-        }
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
@@ -21,7 +15,7 @@ namespace Social_network.Models
         [Column("content")]
         public string content {get; set;}
         [Column("type_noti")]
-        public Type type {get; set;}
+        public int type {get; set;}
         [Column("postId")]
         public int postId {get; set;}
         [Column("creat_at")]
