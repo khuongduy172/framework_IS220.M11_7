@@ -73,7 +73,7 @@ namespace Social_network.Data
                         .HasForeignKey(e => e.senderId);
             });
             modelBuilder.Entity<Notification>(entity => {
-                entity.ToTable("Message_MXH");
+                entity.ToTable("Notification_MXH");
                 entity.HasKey(c => c.id);
 
                 entity.HasOne(e => e.UserFrom)
