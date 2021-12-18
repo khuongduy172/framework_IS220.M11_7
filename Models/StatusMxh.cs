@@ -7,7 +7,7 @@ namespace Social_network.Models
 {
   public class StatusMxh
   {
-    [Key]
+    // [Key]
     [Column("id")]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int statusId {get; set;}

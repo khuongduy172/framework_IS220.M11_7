@@ -7,7 +7,7 @@ namespace Social_network.Models
 {
     public class PagePost
     {
-        [Key]
+        // [Key]
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }

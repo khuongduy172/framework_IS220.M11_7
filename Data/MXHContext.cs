@@ -31,10 +31,11 @@ namespace Social_network.Data
         public DbSet<StatusMxh> StatusMxhs { get; set; }
         public DbSet<UserLikePage> UserLikePages { get; set; }
         public DbSet<UserMxh> UserMxhs { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
-            modelBuilder.Entity<CommentPagePost>().ToTable("Comment_page_post").HasKey(c => new { c.postId, c.userId});
-            modelBuilder.Entity<CommentStatus>().ToTable("Comment_status").HasKey(c => new {c.statusId, c.userId});
+            modelBuilder.Entity<CommentPagePost>().ToTable("Comment_page_post").HasKey(c => new { c.id, c.postId, c.userId});
+            modelBuilder.Entity<CommentStatus>().ToTable("Comment_status").HasKey(c => new {c.id, c.statusId, c.userId});
             modelBuilder.Entity<Follow>(entity => {
                 entity.ToTable("Follow");
                 entity.HasKey(c => new {c.userId, c.followerId});
@@ -62,7 +63,7 @@ namespace Social_network.Data
             });
             modelBuilder.Entity<MessageMxh>(entity => {
                 entity.ToTable("Message_MXH");
-                entity.HasKey(c => new {c.receiverId, c.senderId});
+                entity.HasKey(c => new {c.id, c.receiverId, c.senderId});
 
                 entity.HasOne(e => e.UserReceiver)
                         .WithMany(e => e.MessagesFrom)
@@ -70,6 +71,17 @@ namespace Social_network.Data
                 entity.HasOne(e => e.UserSend)
                         .WithMany(e => e.MessagesTo)
                         .HasForeignKey(e => e.senderId);
+            });
+            modelBuilder.Entity<Notification>(entity => {
+                entity.ToTable("Message_MXH");
+                entity.HasKey(c => c.id);
+
+                entity.HasOne(e => e.UserFrom)
+                        .WithMany(e => e.NotiTo)
+                        .HasForeignKey(e => e.fromId);
+                entity.HasOne(e => e.UserTo)
+                        .WithMany(e => e.NotiFrom)
+                        .HasForeignKey(e => e.toId);
             });
             modelBuilder.Entity<PageMxh>().ToTable("Page_MXH").HasKey(c => c.id);
             modelBuilder.Entity<PagePost>().ToTable("Page_post").HasKey(c => c.id);

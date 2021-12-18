@@ -6,10 +6,10 @@ namespace Social_network.Models
 {
     public class UserLikePage
     {
-        [Key]
+        // [Key]
         [Column("page_id")]
         public int pageId { get; set; }
-        [Key]
+        // [Key]
         [Column("user_id")]
         public int userId { get; set; }
 

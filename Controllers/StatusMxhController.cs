@@ -25,6 +25,7 @@ namespace Social_network.Controllers
     [HttpGet]
     public async Task<ActionResult<IEnumerable<StatusMxh>>> GetStatusMxh([FromQuery] int statusId)
     {
+      // var friendId = from f in _context.Friends
       return await _context.StatusMxhs.Where(s => s.statusId == statusId).ToListAsync();
     }
 

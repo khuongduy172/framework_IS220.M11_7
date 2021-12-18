@@ -12,9 +12,9 @@ DROP DATABASE MXH
 
 create table User_MXH (
 	id int IDENTITY(1,1) constraint PK_User_MXH primary key not null,
-	username varchar(225) not null,
+	username varchar(225) not null UNIQUE,
 	user_password varchar(225) not null,
-	email varchar(225) not null,
+	email varchar(225) not null UNIQUE,
 	phone varchar(20),
 	first_name nvarchar(225) not null,
 	last_name nvarchar(225) not null,
@@ -40,11 +40,12 @@ create table Follow (
 )
 
 create table Message_MXH (
+	id int IDENTITY(1,1),
 	sender_id int,
 	receiver_id int,
 	content ntext,
 	create_at datetime,
-	constraint PK_Message_MXH primary key(sender_id, receiver_id),
+	constraint PK_Message_MXH primary key(id, sender_id, receiver_id),
 )
 
 create table Status_MXH (
@@ -68,12 +69,13 @@ create table React_status (
 )
 
 create table Comment_status (
+	id int IDENTITY(1,1),
 	status_id int,
 	user_id int,
 	content ntext,
 	create_at datetime,
 	update_at datetime,
-	constraint PK_Comment_status primary key(status_id, user_id),
+	constraint PK_Comment_status primary key(id, status_id, user_id),
 )
 
 create table Page_MXH (
@@ -109,17 +111,30 @@ create table React_page_post (
 )
 
 create table Comment_page_post (
+	id int IDENTITY(1,1),
 	post_id int,
 	user_id int,
 	content ntext,
 	create_at datetime,
 	update_at datetime,
-	constraint PK_Comment_page_post primary key(post_id, user_id),
+	constraint PK_Comment_page_post primary key(id, post_id, user_id),
 )
 
 create table Page_post_image (
 	id_image nvarchar(255) constraint PK_Page_post_image primary key,
 	post_id int,
+)
+
+CREATE TABLE Notification_MXH (
+	id int IDENTITY(1,1),
+	fromUID int,
+	toUID int,
+	content ntext,
+	type_noti int,
+	postId int,
+	create_at datetime,
+	update_at datetime,
+	CONSTRAINT PK_notification PRIMARY KEY (id),
 )
 
 ALTER TABLE Friend 
@@ -176,3 +191,8 @@ add constraint FK_Comment_page_post_userId foreign key (user_id) references User
 
 ALTER TABLE Page_post_image 
 add constraint FK_page_image_post_id foreign key (post_id) references Page_post(id);
+
+ALTER TABLE Notification_MXH 
+add CONSTRAINT FK_noti_user_send FOREIGN KEY (fromUID) REFERENCES User_MXH(id);
+ALTER TABLE Notification_MXH 
+add CONSTRAINT FK_noti_user_recieve FOREIGN KEY (toUID) REFERENCES User_MXH(id);

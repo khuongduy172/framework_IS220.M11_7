@@ -7,10 +7,10 @@ namespace Social_network.Models
 {
     public class ReactPagePost
     {
-        [Key]
+        // [Key]
         [Column("post_id")]
         public int postId { get; set; }
-        [Key]
+        // [Key]
         [Column("user_id")]
         public int userId { get; set; }
         [Column("type_react")]

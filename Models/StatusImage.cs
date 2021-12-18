@@ -6,7 +6,7 @@ namespace Social_network.Models
 {
   public class StatusImage
   {
-    [Key]
+    // [Key]
     [Column("id_image")]
     public string idImage {get; set;}
 

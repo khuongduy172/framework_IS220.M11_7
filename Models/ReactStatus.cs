@@ -6,11 +6,11 @@ namespace Social_network.Models
 {
   public class ReactStatus
   {
-    [Key]
+    // [Key]
     [Column("status_id")]
     public int statusId {get; set;}
 
-    [Key]
+    // [Key]
     [Column("user_id")]
     public int userId {get; set;}
 

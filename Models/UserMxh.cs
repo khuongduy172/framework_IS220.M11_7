@@ -25,7 +25,7 @@ namespace Social_network.Models
         [Column("avatar")]
         public string? avatar { get; set; }
         [Column("cover_image")]
-        public string? coverImage { get; set; }
+        public string coverImage { get; set; }
         [Column("date_of_birth")]
         public DateTime dateOfBirth { get; set; }
         [Column("gender")]
@@ -42,6 +42,8 @@ namespace Social_network.Models
         public ICollection<Friend> UserHasFriends { get; set; }
         public ICollection<MessageMxh> MessagesFrom { get; set; }
         public ICollection<MessageMxh> MessagesTo { get; set; }
+        public ICollection<Notification> NotiFrom { get; set; }
+        public ICollection<Notification> NotiTo { get; set; }
         public ICollection<ReactStatus> ReactStatuses { get; set; }
         public ICollection<StatusMxh> StatusMxhs { get; set; }
         public ICollection<CommentStatus> CommentStatuses { get; set; }

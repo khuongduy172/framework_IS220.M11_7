@@ -6,6 +6,9 @@ namespace Social_network.Models
 {
     public class MessageMxh
     {
+        [Column("id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int id {get; set;}
         [Column("sender_id")]
         public int senderId { get; set; }
         [Column("receiver_id")]

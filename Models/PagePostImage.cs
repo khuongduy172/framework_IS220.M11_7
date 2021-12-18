@@ -6,7 +6,7 @@ namespace Social_network.Models
 {
     public class PagePostImage
     {
-        [Key]
+        // [Key]
         [Column("id_image")]
         public string imageId { get; set; }
         [Column("post_id")]

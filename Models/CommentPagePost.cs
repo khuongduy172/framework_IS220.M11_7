@@ -8,10 +8,14 @@ namespace Social_network.Models
 {
     public class CommentPagePost
     {
-        [Key]
+        // [Key]
+        [Column("id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int id { get; set; }
+        // [Key]
         [Column("post_id")]
         public int postId { get; set; }
-        [Key]
+        // [Key]
         [Column("user_id")]
         public int userId { get; set; }
         [Column("content")]

@@ -7,11 +7,15 @@ namespace Social_network.Models
 {
   public class CommentStatus
   {
-    [Key]
+    // [Key]
+    [Column("id")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int id { get; set; }
+    // [Key]
     [Column("status_id")]
     public int statusId {get; set;}
 
-    [Key]
+    // [Key]
     [Column("user_id")]
     public int userId {get; set;}
 
