@@ -4,12 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Social_network.Models;
-
+using Social_network.Data;
+using Social_network.Helper;
 
 namespace Social_network.Hubs
 {
     public class ChatHub : Hub
     {
+        private readonly MXHContext _context;
+        private readonly UserHelper _helper;
+        public ChatHub(MXHContext context, UserHelper helper) 
+        {
+            _context = context;
+            _helper = helper;
+        }
         public async Task JoinRoom(ChatModel userConnection)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, userConnection.Room);
@@ -46,5 +54,36 @@ namespace Social_network.Hubs
 
         //     return Clients.Group(room).SendAsync("UsersInRoom", users);
         // }
+        
+        // Comment
+        public async Task SendComment(string comment, int statusId, int userId)
+        {
+            var cmt = new CommentStatus ();
+            cmt.content = comment;
+            cmt.createAt = DateTime.Today;
+            cmt.updateAt = DateTime.Today;
+            cmt.statusId = statusId;
+            cmt.userId = userId;
+            // _context.CommentStatuses.Add(cmt);
+            // await _context.SaveChangesAsync();
+
+            var noti = new Notification();
+            var sta = (from s in _context.StatusMxhs
+                        where s.statusId == statusId
+                        select s.ownerId).First();
+            var user = await _helper.GetUserById(userId);
+            noti.content = $"{user.firstName} đã bình luận về bài viết của bạn.";
+            noti.createAt = DateTime.Today;
+            noti.fromId = userId;
+            noti.postId = statusId;
+            noti.toId = sta;
+            noti.updateAt = DateTime.Today;
+            noti.type = 1; // comment
+            // _context.Notifications.Add(noti);
+            // await _context.SaveChangesAsync();
+
+            await Clients.Group(statusId.ToString()).SendAsync("ReceiveComment", cmt);
+            await Clients.Group(userId.ToString()).SendAsync("Notification", noti);
+        }
     }
 }

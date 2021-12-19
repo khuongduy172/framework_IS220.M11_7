@@ -118,7 +118,7 @@ namespace Social_network.Controllers
                 _context.UserMxhs.Add(newUser);
                 await _context.SaveChangesAsync();
                 return CreatedAtAction("GetUserMxh", new { id = newUser.id }, newUser);
-            } catch (Exception e) {
+            } catch {
                 return BadRequest();
             }
 
@@ -179,7 +179,11 @@ namespace Social_network.Controllers
         public IActionResult GetFriend(){
             var userId = int.Parse(HttpContext.User.Claims.Single(u=> u.Type == "Id").Value);
             var query = from f in _context.Friends
-                        where f.userId == userId
+                        where f.userId == userId && 
+                            (from t in _context.Friends
+                            where t.friendId == userId 
+                            select t.friendId
+                            ).Contains(f.userId)
                         select new {
                             f.userFriend.avatar,
                             f.userFriend.id,
