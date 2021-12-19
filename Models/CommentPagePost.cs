@@ -14,10 +14,10 @@ namespace Social_network.Models
         public int id { get; set; }
         // [Key]
         [Column("post_id")]
-        public int postId { get; set; }
+        public string postId { get; set; }
         // [Key]
         [Column("user_id")]
-        public int userId { get; set; }
+        public string userId { get; set; }
         [Column("content")]
         public string content { get; set; }
         [Column("create_at")]

@@ -13,11 +13,11 @@ namespace Social_network.Models
     public int id { get; set; }
     // [Key]
     [Column("status_id")]
-    public int statusId {get; set;}
+    public string statusId {get; set;}
 
     // [Key]
     [Column("user_id")]
-    public int userId {get; set;}
+    public string userId {get; set;}
 
     [Column("create_at")]
     public DateTime createAt {get; set;}

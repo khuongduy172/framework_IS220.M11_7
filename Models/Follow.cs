@@ -6,9 +6,9 @@ namespace Social_network.Models
     public class Follow
     {
         [Column("user_id")]
-        public int userId { get; set; }
+        public string userId { get; set; }
         [Column("follower_id")]
-        public int followerId { get; set; }
+        public string followerId { get; set; }
 
 
         // [ForeignKey("userId")]

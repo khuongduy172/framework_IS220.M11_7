@@ -9,10 +9,10 @@ namespace Social_network.Models
     {
         // [Key]
         [Column("post_id")]
-        public int postId { get; set; }
+        public string postId { get; set; }
         // [Key]
         [Column("user_id")]
-        public int userId { get; set; }
+        public string userId { get; set; }
         [Column("type_react")]
         public string typeReact { get; set; }
 

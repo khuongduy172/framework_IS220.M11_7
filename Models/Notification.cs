@@ -9,15 +9,15 @@ namespace Social_network.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         [Column("fromUID")]
-        public int fromId { get; set; }
+        public string fromId { get; set; }
         [Column("toUID")]
-        public int toId { get; set; }
+        public string toId { get; set; }
         [Column("content")]
         public string content {get; set;}
         [Column("type_noti")]
         public int type {get; set;}
         [Column("postId")]
-        public int postId {get; set;}
+        public string postId {get; set;}
         [Column("creat_at")]
         public DateTime createAt { get; set; }
         [Column("update_at")]

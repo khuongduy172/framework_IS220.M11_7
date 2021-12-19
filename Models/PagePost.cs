@@ -9,10 +9,10 @@ namespace Social_network.Models
     {
         // [Key]
         [Column("id")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int id { get; set; }
+        // [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string id { get; set; }
         [Column("page_id")]
-        public int pageId { get; set; }
+        public string pageId { get; set; }
         [Column("content")]
         public string? content { get; set; }
         [Column("create_at")]

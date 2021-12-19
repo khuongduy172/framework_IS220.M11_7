@@ -11,7 +11,7 @@ namespace Social_network.Models
     public string idImage {get; set;}
 
     [Column("status_id")]
-    public int statusId {get; set;}
+    public string statusId {get; set;}
 
     [ForeignKey("statusId")]
     public StatusMxh Status { get; set; }

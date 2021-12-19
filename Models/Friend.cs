@@ -6,9 +6,9 @@ namespace Social_network.Models
     public class Friend
     {
         [Column("user_id")]
-        public int userId { get; set; }
+        public string userId { get; set; }
         [Column("friend_id")]
-        public int friendId { get; set; }
+        public string friendId { get; set; }
 
 
         // [ForeignKey("userId")]

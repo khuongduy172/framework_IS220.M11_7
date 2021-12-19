@@ -23,56 +23,56 @@ namespace Social_network.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CommentPagePost>>> GetAllCommentPagePost([FromQuery] int postId)
+        public async Task<ActionResult<IEnumerable<CommentPagePost>>> GetAllCommentPagePost([FromQuery] string postId)
         {
             var result = await _context.CommentPagePosts.Where(p => p.postId == postId).ToListAsync();
             return result;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<CommentPagePost>> CommentPost(CommentPagePost comment)
-        {
-            _context.CommentPagePosts.Add(comment);
-            await _context.SaveChangesAsync();
+        // [HttpPost]
+        // public async Task<ActionResult<CommentPagePost>> CommentPost(CommentPagePost comment)
+        // {
+        //     _context.CommentPagePosts.Add(comment);
+        //     await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
 
 
-        [HttpPut]
-        public async Task<IActionResult> PutCommentPagePost( [FromQuery] int userId, [FromQuery] int postId, CommentPagePost comment)
-        {
-            if (userId != comment.userId && postId != comment.postId)
-            {
-                return BadRequest();
-            }
+        // [HttpPut]
+        // public async Task<IActionResult> PutCommentPagePost( [FromQuery] int userId, [FromQuery] int postId, CommentPagePost comment)
+        // {
+        //     if (userId != comment.userId && postId != comment.postId)
+        //     {
+        //         return BadRequest();
+        //     }
 
-            var check = await _context.CommentPagePosts.FindAsync(postId, userId);
-            if (check == null)
-            {
-                return NotFound();
-            }
+        //     var check = await _context.CommentPagePosts.FindAsync(postId, userId);
+        //     if (check == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            _context.Entry(comment).State = EntityState.Modified;
+        //     _context.Entry(comment).State = EntityState.Modified;
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
 
         
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteCommentPagePost([FromQuery] int userId, [FromQuery] int postId)
-        {
-            var comment = await _context.CommentPagePosts.FindAsync(postId, userId);
-            if (comment == null)
-            {
-                return NotFound();
-            }
+        // [HttpDelete]
+        // public async Task<IActionResult> DeleteCommentPagePost([FromQuery] int userId, [FromQuery] int postId)
+        // {
+        //     var comment = await _context.CommentPagePosts.FindAsync(postId, userId);
+        //     if (comment == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            _context.CommentPagePosts.Remove(comment);
-            await _context.SaveChangesAsync();
+        //     _context.CommentPagePosts.Remove(comment);
+        //     await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
     }
 }

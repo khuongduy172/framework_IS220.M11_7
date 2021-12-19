@@ -23,7 +23,7 @@ namespace Social_network.Controllers
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<StatusMxh>>> GetStatusMxh([FromQuery] int statusId)
+    public async Task<ActionResult<IEnumerable<StatusMxh>>> GetStatusMxh([FromQuery] string statusId)
     {
       // var friendId = from f in _context.Friends
       return await _context.StatusMxhs.Where(s => s.statusId == statusId).ToListAsync();
@@ -39,7 +39,7 @@ namespace Social_network.Controllers
     }
 
     [HttpPut]
-    public async Task<IActionResult> PutStatusMxh( [FromQuery] int ownerId, [FromQuery] int statusId, StatusMxh statusMxh)
+    public async Task<IActionResult> PutStatusMxh( [FromQuery] string ownerId, [FromQuery] string statusId, StatusMxh statusMxh)
     {
       if (ownerId != statusMxh.ownerId && statusId != statusMxh.statusId)
       {

@@ -9,11 +9,11 @@ namespace Social_network.Models
   {
     // [Key]
     [Column("id")]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int statusId {get; set;}
+    // [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public string statusId {get; set;}
 
     [Column("owner_id")]
-    public int ownerId {get; set;}
+    public string ownerId {get; set;}
 
     [Column("content")]
     public string content {get; set;}

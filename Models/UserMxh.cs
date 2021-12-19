@@ -8,8 +8,8 @@ namespace Social_network.Models
     public class UserMxh
     {
         [Column("id")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int id { get; set; }
+        // [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string id { get; set; }
         [Column("username")]
         public string userName { get; set; }
         [Column("user_password")]

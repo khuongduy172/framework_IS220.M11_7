@@ -8,10 +8,10 @@ namespace Social_network.Models
     {
         // [Key]
         [Column("page_id")]
-        public int pageId { get; set; }
+        public string pageId { get; set; }
         // [Key]
         [Column("user_id")]
-        public int userId { get; set; }
+        public string userId { get; set; }
 
 
         [ForeignKey("userId")]

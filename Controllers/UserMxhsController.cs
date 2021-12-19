@@ -27,7 +27,6 @@ namespace Social_network.Controllers
         }
 
         // GET: api/UserMxhs
-        [Authorize]
         [HttpGet]
         public IQueryable GetUserMxh()
         {
@@ -48,8 +47,7 @@ namespace Social_network.Controllers
                             u.isDeleted,
                             u.gender,
                         };
-            var userId = HttpContext.User.Claims.Single(u=> u.Type == "Id").Value;
-            Console.WriteLine(userId);
+            Guid g = Guid.NewGuid();
             return query;
         }
 
@@ -70,7 +68,7 @@ namespace Social_network.Controllers
         // PUT: api/UserMxhs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserMxh(int id, UserMxh userMxh)
+        public async Task<IActionResult> PutUserMxh(string id, UserMxh userMxh)
         {
             if (id != userMxh.id)
             {
@@ -105,6 +103,8 @@ namespace Social_network.Controllers
         {
             var hashedPassword = BC.HashPassword(userMxh.userPassword);
             UserMxh newUser = new UserMxh();
+            Guid g = Guid.NewGuid();
+            newUser.id = g.ToString();
             newUser.userName = userMxh.userName;
             newUser.email = userMxh.email;
             newUser.phone = userMxh.phone;
@@ -124,9 +124,9 @@ namespace Social_network.Controllers
 
         }
 
-        // DELETE: api/UserMxhs/5
+        // // DELETE: api/UserMxhs/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUserMxh(int id)
+        public async Task<IActionResult> DeleteUserMxh(string id)
         {
             var userMxh = await _context.UserMxhs.FindAsync(id);
             if (userMxh == null)
@@ -139,7 +139,7 @@ namespace Social_network.Controllers
             return NoContent();
         }
 
-        private bool UserMxhExists(int id)
+        private bool UserMxhExists(string id)
         {
             return _context.UserMxhs.Any(e => e.id == id);
         }
@@ -148,7 +148,7 @@ namespace Social_network.Controllers
         [HttpGet]
         [Route("me")]
         public IActionResult GetMe(){
-            var userId = int.Parse(HttpContext.User.Claims.Single(u=> u.Type == "Id").Value);
+            var userId = HttpContext.User.Claims.Single(u=> u.Type == "Id").Value;
             var query = from u in _context.UserMxhs
                         where u.id == userId
                         select new {
@@ -177,7 +177,7 @@ namespace Social_network.Controllers
         [HttpGet]
         [Route("friend")]
         public IActionResult GetFriend(){
-            var userId = int.Parse(HttpContext.User.Claims.Single(u=> u.Type == "Id").Value);
+            var userId = HttpContext.User.Claims.Single(u=> u.Type == "Id").Value;
             var query = from f in _context.Friends
                         where f.userId == userId && 
                             (from t in _context.Friends
@@ -200,8 +200,8 @@ namespace Social_network.Controllers
         [Authorize]
         [HttpGet]
         [Route("get-all-image-by-id")]
-        public IActionResult GetAllImage(int userId){
-            var userIdToken = int.Parse(HttpContext.User.Claims.Single(u=> u.Type == "Id").Value);
+        public IActionResult GetAllImage(string userId){
+            var userIdToken = HttpContext.User.Claims.Single(u=> u.Type == "Id").Value;
             var query = from s in _context.StatusMxhs
                         where s.ownerId == userId
                         select s.StatusImages;

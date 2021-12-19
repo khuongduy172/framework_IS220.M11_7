@@ -19,51 +19,51 @@ namespace Social_network.Controllers
       var _context = context;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<ReactStatus>>> GetReactStatus([FromQuery] int statusId)
-    {
-      return await _context.ReactStatuses.Where(s => s.statusId == statusId).ToListAsync();
-    }
+    // [HttpGet]
+    // public async Task<ActionResult<IEnumerable<ReactStatus>>> GetReactStatus([FromQuery] string statusId)
+    // {
+    //   return await _context.ReactStatuses.Where(s => s.statusId == statusId).ToListAsync();
+    // }
 
-    [HttpPost]
-    public async Task<ActionResult<ReactStatus>> ReactStatus(ReactStatus reactStatus)
-    {
-      _context.ReactStatuses.Add(reactStatus);
-      await _context.SaveChangesAsync();
-      return NoContent();
-    }
+    // [HttpPost]
+    // public async Task<ActionResult<ReactStatus>> ReactStatus(ReactStatus reactStatus)
+    // {
+    //   _context.ReactStatuses.Add(reactStatus);
+    //   await _context.SaveChangesAsync();
+    //   return NoContent();
+    // }
 
-    [HttpPut]
-    public async Task<IActionResult> PutReactStatus( [FromQuery] int userId, [FromQuery] int statusId, ReactStatus reactStatus)
-    {
-      if (userId != reactStatus.userId && statusId != reactStatus.statusId)
-      {
-        return BadRequest();
-      }
+    // [HttpPut]
+    // public async Task<IActionResult> PutReactStatus( [FromQuery] string userId, [FromQuery] string statusId, ReactStatus reactStatus)
+    // {
+    //   if (userId != reactStatus.userId && statusId != reactStatus.statusId)
+    //   {
+    //     return BadRequest();
+    //   }
 
-      var check = await _context.ReactStatuses.FindAsync(statusId, userId);
-      if (check == null)
-      {
-        return NotFound();
-      }
+    //   var check = await _context.ReactStatuses.FindAsync(statusId, userId);
+    //   if (check == null)
+    //   {
+    //     return NotFound();
+    //   }
 
-      _context.Entry(reactStatus).State = EntityState.Modified;
-        return NoContent();
-    }
+    //   _context.Entry(reactStatus).State = EntityState.Modified;
+    //     return NoContent();
+    // }
 
 
-    [HttpDelete]
-    public async Task<IActionResult> DeleteReactStatus( [FromQuery] int statusId, [FromQuery] int userId)
-    {
-      var react = await _context.ReactStatuses.FindAsync(statusId, userId);
-      if (react == null)
-      {
-        return NotFound();
-      }
+    // [HttpDelete]
+    // public async Task<IActionResult> DeleteReactStatus( [FromQuery] int statusId, [FromQuery] int userId)
+    // {
+    //   var react = await _context.ReactStatuses.FindAsync(statusId, userId);
+    //   if (react == null)
+    //   {
+    //     return NotFound();
+    //   }
 
-      _context.ReactStatuses.Remove(react);
-      await _context.SaveChangesAsync();
-      return NoContent();
-    }
+    //   _context.ReactStatuses.Remove(react);
+    //   await _context.SaveChangesAsync();
+    //   return NoContent();
+    // }
   }
 }

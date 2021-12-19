@@ -12,11 +12,9 @@ namespace Social_network.Hubs
     public class ChatHub : Hub
     {
         private readonly MXHContext _context;
-        private readonly UserHelper _helper;
-        public ChatHub(MXHContext context, UserHelper helper) 
+        public ChatHub(MXHContext context) 
         {
             _context = context;
-            _helper = helper;
         }
         public async Task JoinRoom(ChatModel userConnection)
         {
@@ -56,8 +54,12 @@ namespace Social_network.Hubs
         // }
         
         // Comment
-        public async Task SendComment(string comment, int statusId, int userId)
+        public async Task SendComment(string comment, string statusId, string userId)
         {
+            Guid g = Guid.NewGuid();
+            Console.WriteLine(g);
+            Console.WriteLine(Guid.NewGuid());
+
             var cmt = new CommentStatus ();
             cmt.content = comment;
             cmt.createAt = DateTime.Today;
@@ -71,8 +73,8 @@ namespace Social_network.Hubs
             var sta = (from s in _context.StatusMxhs
                         where s.statusId == statusId
                         select s.ownerId).First();
-            var user = await _helper.GetUserById(userId);
-            noti.content = $"{user.firstName} đã bình luận về bài viết của bạn.";
+            // var user = await _helper.GetUserById(userId);
+            noti.content = $"{userId} đã bình luận về bài viết của bạn.";
             noti.createAt = DateTime.Today;
             noti.fromId = userId;
             noti.postId = statusId;
@@ -83,7 +85,7 @@ namespace Social_network.Hubs
             // await _context.SaveChangesAsync();
 
             await Clients.Group(statusId.ToString()).SendAsync("ReceiveComment", cmt);
-            await Clients.Group(userId.ToString()).SendAsync("Notification", noti);
+            await Clients.Group(sta.ToString()).SendAsync("Notification", noti);
         }
     }
 }

@@ -36,29 +36,29 @@ namespace Social_network.Controllers
             var result = await _context.MessageMxhs.FromSqlRaw(sql, userid).ToListAsync();
             return result;
         }
-        [HttpPost]
-        public async Task<ActionResult<MessageMxh>> PostMessageMxh(MessageMxh message)
-        {
-            _context.MessageMxhs.Add(message);
-            await _context.SaveChangesAsync();
+        // [HttpPost]
+        // public async Task<ActionResult<MessageMxh>> PostMessageMxh(MessageMxh message)
+        // {
+        //     _context.MessageMxhs.Add(message);
+        //     await _context.SaveChangesAsync();
 
-            // return CreatedAtAction("GetAllMessageMxh", new { message.senderId, message.receiverId},message);
-            return NoContent();
-        }
+        //     // return CreatedAtAction("GetAllMessageMxh", new { message.senderId, message.receiverId},message);
+        //     return NoContent();
+        // }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteMessageMxh(int senderId, int receiverId)
-        {
-            var message = await _context.MessageMxhs.FindAsync(senderId, receiverId);
-            if (message == null)
-            {
-                return NotFound();
-            }
+        // [HttpDelete]
+        // public async Task<IActionResult> DeleteMessageMxh(int senderId, int receiverId)
+        // {
+        //     var message = await _context.MessageMxhs.FindAsync(senderId, receiverId);
+        //     if (message == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            _context.MessageMxhs.Remove(message);
-            await _context.SaveChangesAsync();
+        //     _context.MessageMxhs.Remove(message);
+        //     await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
     }
 }

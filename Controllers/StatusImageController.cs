@@ -20,7 +20,7 @@ namespace Social_network.Controllers
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<StatusImage>>> GetStatusImage([FromQuery] int statusId)
+    public async Task<ActionResult<IEnumerable<StatusImage>>> GetStatusImage([FromQuery] string statusId)
     {
       return await _context.StatusImages.Where(s => s.statusId == statusId).ToListAsync();
     }
@@ -34,7 +34,7 @@ namespace Social_network.Controllers
     }
 
     [HttpPut]
-    public async Task<IActionResult> PutStatusImage(  [FromQuery] int statusId, StatusImage statusImage)
+    public async Task<IActionResult> PutStatusImage(  [FromQuery] string statusId, StatusImage statusImage)
     {
       if (statusId != statusImage.statusId)
       {
@@ -51,19 +51,19 @@ namespace Social_network.Controllers
         return NoContent();
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> DeleteStatusImage( [FromQuery] int statusId)
-    {
-      var react = await _context.StatusImages.FindAsync(statusId);
-            if (react == null)
-            {
-                return NotFound();
-            }
+    // [HttpDelete]
+    // public async Task<IActionResult> DeleteStatusImage( [FromQuery] int statusId)
+    // {
+    //   var react = await _context.StatusImages.FindAsync(statusId);
+    //         if (react == null)
+    //         {
+    //             return NotFound();
+    //         }
 
-            _context.StatusImages.Remove(react);
-            await _context.SaveChangesAsync();
+    //         _context.StatusImages.Remove(react);
+    //         await _context.SaveChangesAsync();
 
-            return NoContent();
-    }
+    //         return NoContent();
+    // }
   }
 }

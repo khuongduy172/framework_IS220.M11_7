@@ -10,7 +10,7 @@ namespace Social_network.Models
         [Column("id_image")]
         public string imageId { get; set; }
         [Column("post_id")]
-        public int postId { get; set; }
+        public string postId { get; set; }
         
         [ForeignKey("postId")]
         public PagePost PagePost { get; set; }

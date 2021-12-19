@@ -11,10 +11,10 @@ namespace Social_network.Models
     {
         // [Key]
         [Column("id")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int id { get; set; }
+        // [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string id { get; set; }
         [Column("owner_id")]
-        public int ownerId { get; set; }
+        public string ownerId { get; set; }
         [Column("description_MXH")]
         public string? description { get; set; }
         [Column("name_page")]

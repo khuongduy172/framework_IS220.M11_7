@@ -8,11 +8,11 @@ namespace Social_network.Models
   {
     // [Key]
     [Column("status_id")]
-    public int statusId {get; set;}
+    public string statusId {get; set;}
 
     // [Key]
     [Column("user_id")]
-    public int userId {get; set;}
+    public string userId {get; set;}
 
     [Column("react_type")]
     public string reactType {get; set;}

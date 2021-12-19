@@ -5,13 +5,13 @@ go
 set dateformat dmy
 
 /*
-use NORTHWND 
+use master 
 go 
 DROP DATABASE MXH
 */
 
 create table User_MXH (
-	id int IDENTITY(1,1) constraint PK_User_MXH primary key not null,
+	id varchar(255) constraint PK_User_MXH primary key not null,
 	username varchar(225) not null UNIQUE,
 	user_password varchar(225) not null,
 	email varchar(225) not null UNIQUE,
@@ -28,29 +28,29 @@ create table User_MXH (
 )
 
 create table Friend (
-	user_id int,
-	friend_id int,
+	user_id varchar(255),
+	friend_id varchar(255),
 	constraint PK_Friend primary key (user_id, friend_id),
 )
 
 create table Follow (
-	user_id int,
-	follower_id int,
+	user_id varchar(255),
+	follower_id varchar(255),
 	constraint PK_Follow primary key (user_id, follower_id),
 )
 
 create table Message_MXH (
 	id int IDENTITY(1,1),
-	sender_id int,
-	receiver_id int,
+	sender_id varchar(255),
+	receiver_id varchar(255),
 	content ntext,
 	create_at datetime,
 	constraint PK_Message_MXH primary key(id, sender_id, receiver_id),
 )
 
 create table Status_MXH (
-	id int IDENTITY(1,1) constraint PK_Status_MXH primary key,
-	owner_id int,
+	id varchar(255) constraint PK_Status_MXH primary key,
+	owner_id varchar(255),
 	content ntext,
 	create_at datetime,
 	update_at datetime, 
@@ -58,20 +58,20 @@ create table Status_MXH (
 
 create table Status_image (
 	id_image nvarchar(255) constraint PK_Status_image primary key,
-	status_id int,
+	status_id varchar(255),
 )
 
 create table React_status (
-	status_id int,
+	status_id varchar(255),
 	type_react nvarchar(100),
-	user_id int,
+	user_id varchar(255),
 	constraint PK_React_status primary key(status_id, user_id),
 )
 
 create table Comment_status (
 	id int IDENTITY(1,1),
-	status_id int,
-	user_id int,
+	status_id varchar(255),
+	user_id varchar(255),
 	content ntext,
 	create_at datetime,
 	update_at datetime,
@@ -79,8 +79,8 @@ create table Comment_status (
 )
 
 create table Page_MXH (
-	id int IDENTITY(1,1) constraint PK_Page_MXH primary key,
-	owner_id int,
+	id varchar(255) constraint PK_Page_MXH primary key,
+	owner_id varchar(255),
 	description_MXH nvarchar(225),
 	name_page nvarchar(225),
 	avatar nvarchar(225),
@@ -91,29 +91,29 @@ create table Page_MXH (
 )
 
 create table User_like_page (
-	page_id int,
-	user_id int,
+	page_id varchar(255),
+	user_id varchar(255),
 	constraint PK_User_like_page primary key (page_id, user_id),
 )
 
 create table Page_post (
-	 id int IDENTITY(1,1) constraint PK_Page_post primary key,
-	 page_id int,
+	 id varchar(255) constraint PK_Page_post primary key,
+	 page_id varchar(255),
 	 content ntext,
 	 create_at datetime,
 )
 
 create table React_page_post (
-	post_id int,
+	post_id varchar(255),
 	type_react NVARCHAR(100),
-	user_id int,
+	user_id varchar(255),
 	CONSTRAINT PK_React_page_post PRIMARY KEY(post_id, user_id),
 )
 
 create table Comment_page_post (
 	id int IDENTITY(1,1),
-	post_id int,
-	user_id int,
+	post_id varchar(255),
+	user_id varchar(255),
 	content ntext,
 	create_at datetime,
 	update_at datetime,
@@ -122,16 +122,16 @@ create table Comment_page_post (
 
 create table Page_post_image (
 	id_image nvarchar(255) constraint PK_Page_post_image primary key,
-	post_id int,
+	post_id varchar(255),
 )
 
 CREATE TABLE Notification_MXH (
 	id int IDENTITY(1,1),
-	fromUID int,
-	toUID int,
+	fromUID varchar(255),
+	toUID varchar(255),
 	content ntext,
 	type_noti int,
-	postId int,
+	postId varchar(255),
 	create_at datetime,
 	update_at datetime,
 	CONSTRAINT PK_notification PRIMARY KEY (id),

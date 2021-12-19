@@ -22,32 +22,32 @@ namespace Social_network.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PagePostImage>>> GetAllPageImage([FromQuery] int pageId)
-        {
-            var pageid = new SqlParameter("pageid", pageId);
-            var sql = $"SELECT id_image, post_id " +
-                $"FROM Page_post_image PI, Page_post P " +
-                $"WHERE PI.post_id = P.id     " +
-                $"AND P.page_id = @pageid;";
-            var result = await _context.PagePostImages.FromSqlRaw(sql, pageid).ToListAsync();
-            return result;
-        }
+        // [HttpGet]
+        // public async Task<ActionResult<IEnumerable<PagePostImage>>> GetAllPageImage([FromQuery] int pageId)
+        // {
+        //     var pageid = new SqlParameter("pageid", pageId);
+        //     var sql = $"SELECT id_image, post_id " +
+        //         $"FROM Page_post_image PI, Page_post P " +
+        //         $"WHERE PI.post_id = P.id     " +
+        //         $"AND P.page_id = @pageid;";
+        //     var result = await _context.PagePostImages.FromSqlRaw(sql, pageid).ToListAsync();
+        //     return result;
+        // }
 
-        [HttpGet]
-        [Route("getpostimage")]
+        // [HttpGet]
+        // [Route("getpostimage")]
 
-        public async Task<ActionResult<IEnumerable<PagePostImage>>> GetPostImage( [FromQuery] int postId)
-        {
-            var postImage = await _context.PagePostImages.Where( i => i.postId == postId).ToListAsync();
+        // public async Task<ActionResult<IEnumerable<PagePostImage>>> GetPostImage( [FromQuery] int postId)
+        // {
+        //     var postImage = await _context.PagePostImages.Where( i => i.postId == postId).ToListAsync();
 
-            if (postImage == null)
-            {
-                return NotFound();
-            }
+        //     if (postImage == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            return postImage;
-        }
+        //     return postImage;
+        // }
 
         // [HttpPut("{id}")]
         // public async Task<IActionResult> PutUserMxh(int id, UserMxh userMxh)

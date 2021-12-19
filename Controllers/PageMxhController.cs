@@ -23,7 +23,7 @@ namespace Social_network.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PageMxh>>> GetAllPageMxh([FromQuery] int id)
+        public async Task<ActionResult<IEnumerable<PageMxh>>> GetAllPageMxh([FromQuery] string id)
         {
             var result = await _context.PageMxhs.Where(p => p.id == id).ToListAsync();
             return result;
@@ -38,40 +38,40 @@ namespace Social_network.Controllers
             return NoContent();
         }
 
-        [HttpPut]
-        public async Task<IActionResult> PutPageMxh( [FromQuery] int id, PageMxh pageMxh)
-        {
-            if (id != pageMxh.id)
-            {
-                return BadRequest();
-            }
+        // [HttpPut]
+        // public async Task<IActionResult> PutPageMxh( [FromQuery] string id, PageMxh pageMxh)
+        // {
+        //     if (id != pageMxh.id)
+        //     {
+        //         return BadRequest();
+        //     }
 
-            var check = await _context.PageMxhs.FindAsync(id);
-            if (check == null)
-            {
-                return NotFound();
-            }
+        //     var check = await _context.PageMxhs.FindAsync(id);
+        //     if (check == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            _context.Entry(pageMxh).State = EntityState.Modified;
+        //     _context.Entry(pageMxh).State = EntityState.Modified;
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
 
         
 
-        [HttpDelete]
-        public async Task<IActionResult> DeletePageMxh([FromQuery] int id)
-        {
-            var pageMxh = await _context.PageMxhs.FindAsync(id);
-            if (pageMxh == null)
-            {
-                return NotFound();
-            }
+        // [HttpDelete]
+        // public async Task<IActionResult> DeletePageMxh([FromQuery] int id)
+        // {
+        //     var pageMxh = await _context.PageMxhs.FindAsync(id);
+        //     if (pageMxh == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            _context.PageMxhs.Remove(pageMxh);
-            await _context.SaveChangesAsync();
+        //     _context.PageMxhs.Remove(pageMxh);
+        //     await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
     }
 }

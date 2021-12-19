@@ -10,9 +10,9 @@ namespace Social_network.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id {get; set;}
         [Column("sender_id")]
-        public int senderId { get; set; }
+        public string senderId { get; set; }
         [Column("receiver_id")]
-        public int receiverId { get; set; }
+        public string receiverId { get; set; }
         [Column("[content]")]
         public string content { get; set; }
         [Column("creat_at")]
