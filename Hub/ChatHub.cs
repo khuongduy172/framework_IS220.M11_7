@@ -26,10 +26,21 @@ namespace Social_network.Hubs
 
             // await SendUsersConnected(userConnection.Room);
         }
-
-        public async Task SendMessage(string message, string user, string room)
+        public async Task JoinRoomChat(ChatModel userConnection)
         {
-            await Clients.Group(room).SendAsync("ReceiveMessage", user, message);
+            await Groups.AddToGroupAsync(Context.ConnectionId, userConnection.Room + userConnection.User);
+            await Groups.AddToGroupAsync(Context.ConnectionId, userConnection.User + userConnection.Room);
+        }
+
+        public async Task SendMessage(string message, string fromId, string toId)
+        {
+            MessageMxh mes = new MessageMxh();
+            mes.content = message;
+            mes.createAt = DateTime.Today;
+            mes.senderId = fromId;
+            mes.receiverId = toId;
+
+            await Clients.Group(fromId + toId).SendAsync("ReceiveMessage", mes);
         }
 
         // public override Task OnDisconnectedAsync(Exception exception)
