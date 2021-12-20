@@ -213,5 +213,12 @@ namespace Social_network.Controllers
                 return Ok(new {imgList = query, isOwnner});
             }
         }
+
+        // [HttpPost]
+        // [Route("UpdateUserMXH")]
+        // public async Task<ActionResult<UserMxh>> PostUserMxh(CreateUserModel userMxh)
+        // {
+
+        // }
     }
 }

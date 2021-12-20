@@ -28,6 +28,18 @@ namespace Social_network.Controllers
             var result = await _context.PagePosts.Where(i => i.id == id).ToListAsync();
             return result;
         }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PagePost>> GetPagePost(int id)
+        {
+            var pagePost = await _context.PagePosts.FindAsync(id);
+
+            if (pagePost == null)
+            {
+                return NotFound();
+            }
+
+            return pagePost;
+        }
         [HttpGet]
         [Route("getPagePost")]
         public async Task<IQueryable> GetAllPagePost()
@@ -54,6 +66,22 @@ namespace Social_network.Controllers
             return NoContent();
         }
 
+        [HttpPost]
+        [Route("createPagePost")]
+        public async Task<ActionResult<PagePost>> AddPagePostByTime(PagePost pagePost)
+        {
+            PagePost newPagePost = new PagePost();
+            newPagePost.pageId = 1;
+            newPagePost.content = pagePost.content;
+            newPagePost.createAt = DateTime.Today;
+            try {
+                _context.PagePosts.Add(newPagePost);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetAllPagePost", new {newPagePost});
+            } catch (Exception e) {
+                return BadRequest();
+            }
+        }
 
         [HttpPut]
         public async Task<IActionResult> PutPagePost( [FromQuery] int id, [FromQuery] int pageId, PagePost pagePost)

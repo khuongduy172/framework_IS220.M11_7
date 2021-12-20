@@ -196,3 +196,22 @@ ALTER TABLE Notification_MXH
 add CONSTRAINT FK_noti_user_send FOREIGN KEY (fromUID) REFERENCES User_MXH(id);
 ALTER TABLE Notification_MXH 
 add CONSTRAINT FK_noti_user_recieve FOREIGN KEY (toUID) REFERENCES User_MXH(id);
+
+select * from User_MXH
+
+insert into User_MXH (username, user_password, email, first_name, last_name, date_of_birth, gender, create_at) values ('tuan', 'tuan1003', '19520331@gm.uit.edu.vn', 'Le', 'Tuan', '10/10/2001', 'nam', '10/10/2021')
+insert into User_MXH (username, user_password, email, first_name, last_name, date_of_birth, gender, create_at) values ('hung', 'hung0102', '19520102@gm.uit.edu.vn', 'Pho', 'Hung', '10/10/2001', 'nu', '10/10/2021')
+
+select * from Page_MXH
+
+insert into Page_MXH (owner_id) values (1)
+insert into Page_MXH (owner_id) values (2)
+insert into Page_MXH (owner_id) values (1)
+insert into Page_MXH (owner_id) values (2)
+
+select * from Page_post
+
+insert into Page_post (page_id, content, create_at) values (1,'Doi voi toi 30 ty chi la rac!!!','12/12/2021')
+insert into Page_post (page_id, content, create_at) values (2,'Doi voi toi 30 ty chi la rac!!!','12/12/2021')
+insert into Page_post (page_id, content, create_at) values (3,'Doi voi toi 30 ty chi la rac!!!','12/12/2021')
+insert into Page_post (page_id, content, create_at) values (4,'Doi voi toi 30 ty chi la rac!!!','12/12/2021')
