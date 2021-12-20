@@ -53,7 +53,7 @@ namespace Social_network.Controllers
 
         // GET: api/UserMxhs/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserMxh>> GetUserMxh(int id)
+        public async Task<ActionResult<UserMxh>> GetUserMxh(string id)
         {
             var userMxh = await _context.UserMxhs.FindAsync(id);
 

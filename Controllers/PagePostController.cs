@@ -22,6 +22,36 @@ namespace Social_network.Controllers
             _context = context;
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PagePost>> GetPagePost(string id)
+        {
+            var pagePost = await _context.PagePosts.FindAsync(id);
+
+            if (pagePost == null)
+            {
+                return NotFound();
+            }
+
+            return pagePost;
+        }
+
+        [HttpPost]
+        [Route("createPagePost")]
+        public async Task<ActionResult<PagePost>> AddPagePostByTime(PagePost pagePost)
+        {
+            PagePost newPagePost = new PagePost();
+            newPagePost.pageId = pagePost.pageId;
+            newPagePost.content = pagePost.content;
+            newPagePost.createAt = DateTime.Today;
+            try {
+                _context.PagePosts.Add(newPagePost);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetAllPagePost", new {newPagePost});
+            } catch (Exception e) {
+                return BadRequest();
+            }
+        }
+
         // [HttpGet]
         // public async Task<ActionResult<IEnumerable<PagePost>>> GetAllPagePostById([FromQuery] string id)
         // {
