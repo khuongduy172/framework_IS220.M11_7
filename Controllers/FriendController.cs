@@ -61,5 +61,26 @@ namespace Social_network.Controllers
 
             return NoContent();
         }
+        [HttpGet]
+        [Route("check-friend")]
+        public IActionResult CheckFriend (string userId) 
+        {
+            var me = HttpContext.User.Claims.Single(u=> u.Type == "Id").Value;
+            Console.WriteLine(me);
+            var temp = (from f in _context.Friends
+                        where f.userId == me
+                        where f.friendId == userId
+                        select f.userId).Contains(me);
+            var temp1 = (from f in _context.Friends
+                        where f.userId == userId
+                        where f.friendId == me
+                        select f.friendId).Contains(me);
+            
+            if (temp && temp1) {
+                return Ok(new {isFriend = true});
+            } else {
+                return Ok(new {isFriend = false});
+            }
+        }
     }
 }

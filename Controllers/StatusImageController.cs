@@ -10,7 +10,8 @@ using Social_network.Models;
 
 namespace Social_network.Controllers 
 {
-
+  [Route("api/[controller]")]
+  [ApiController]
   public class StatusImageController : ControllerBase
   {
     private readonly MXHContext _context;
@@ -20,17 +21,20 @@ namespace Social_network.Controllers
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<StatusImage>>> GetStatusImage([FromQuery] string statusId)
+    public IQueryable GetStatusImage([FromQuery] string statusId)
     {
-      return await _context.StatusImages.Where(s => s.statusId == statusId).ToListAsync();
+      var query = from i in _context.StatusImages
+                  where i.statusId == statusId
+                  select i;
+      return query;
     }
 
     [HttpPost]
-    public async Task<ActionResult<StatusImage>> StatusImage(StatusImage statusImage)
+    public async Task<IActionResult> StatusImage(StatusImage statusImage)
     {
-      _context.StatusImages.Add(statusImage);
-      await _context.SaveChangesAsync();
-      return NoContent();
+        _context.StatusImages.Add(statusImage);
+        await _context.SaveChangesAsync();
+        return Ok(statusImage);
     }
 
     [HttpPut]
@@ -51,19 +55,20 @@ namespace Social_network.Controllers
         return NoContent();
     }
 
-    // [HttpDelete]
-    // public async Task<IActionResult> DeleteStatusImage( [FromQuery] int statusId)
-    // {
-    //   var react = await _context.StatusImages.FindAsync(statusId);
-    //         if (react == null)
-    //         {
-    //             return NotFound();
-    //         }
+    [HttpDelete]
+    public async Task<IActionResult> DeleteStatusImage( [FromQuery] string statusId, string image)
+    {
+      var react = await _context.StatusImages.FindAsync(image, statusId);
+            if (react == null)
+            {
+                return NotFound();
+            }
 
-    //         _context.StatusImages.Remove(react);
-    //         await _context.SaveChangesAsync();
+            // _context.StatusImages.Remove(react);
+            // await _context.SaveChangesAsync();
 
-    //         return NoContent();
-    // }
+            // return NoContent();
+            return Ok(react);
+    }
   }
 }

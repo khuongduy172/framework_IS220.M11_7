@@ -113,7 +113,7 @@ namespace Social_network.Controllers
             newUser.dateOfBirth = userMxh.dateOfBirth;
             newUser.gender = userMxh.gender;
             newUser.userPassword = hashedPassword;
-            newUser.createdAt = DateTime.Today;
+            newUser.createdAt = DateTime.Now;
             try{
                 _context.UserMxhs.Add(newUser);
                 await _context.SaveChangesAsync();
@@ -203,8 +203,9 @@ namespace Social_network.Controllers
         public IActionResult GetAllImage(string userId){
             var userIdToken = HttpContext.User.Claims.Single(u=> u.Type == "Id").Value;
             var query = from s in _context.StatusMxhs
+                        join i in _context.StatusImages on s.statusId equals i.statusId
                         where s.ownerId == userId
-                        select s.StatusImages;
+                        select i;
             bool isOwnner;
             if(userId == userIdToken) {
                 isOwnner = true;

@@ -36,7 +36,7 @@ namespace Social_network.Hubs
         {
             MessageMxh mes = new MessageMxh();
             mes.content = message;
-            mes.createAt = DateTime.Today;
+            mes.createAt = DateTime.Now;
             mes.senderId = fromId;
             mes.receiverId = toId;
 
@@ -67,14 +67,10 @@ namespace Social_network.Hubs
         // Comment
         public async Task SendComment(string comment, string statusId, string userId)
         {
-            Guid g = Guid.NewGuid();
-            Console.WriteLine(g);
-            Console.WriteLine(Guid.NewGuid());
-
             var cmt = new CommentStatus ();
             cmt.content = comment;
-            cmt.createAt = DateTime.Today;
-            cmt.updateAt = DateTime.Today;
+            cmt.createAt = DateTime.Now;
+            cmt.updateAt = DateTime.Now;
             cmt.statusId = statusId;
             cmt.userId = userId;
             // _context.CommentStatuses.Add(cmt);
@@ -86,11 +82,11 @@ namespace Social_network.Hubs
                         select s.ownerId).First();
             // var user = await _helper.GetUserById(userId);
             noti.content = $"{userId} đã bình luận về bài viết của bạn.";
-            noti.createAt = DateTime.Today;
+            noti.createAt = DateTime.Now;
             noti.fromId = userId;
             noti.postId = statusId;
             noti.toId = sta;
-            noti.updateAt = DateTime.Today;
+            noti.updateAt = DateTime.Now;
             noti.type = 1; // comment
             // _context.Notifications.Add(noti);
             // await _context.SaveChangesAsync();

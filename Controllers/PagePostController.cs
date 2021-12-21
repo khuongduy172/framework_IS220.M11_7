@@ -42,7 +42,7 @@ namespace Social_network.Controllers
             PagePost newPagePost = new PagePost();
             newPagePost.pageId = pagePost.pageId;
             newPagePost.content = pagePost.content;
-            newPagePost.createAt = DateTime.Today;
+            newPagePost.createAt = DateTime.Now;
             try {
                 _context.PagePosts.Add(newPagePost);
                 await _context.SaveChangesAsync();

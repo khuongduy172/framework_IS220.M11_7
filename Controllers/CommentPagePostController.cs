@@ -23,9 +23,11 @@ namespace Social_network.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CommentPagePost>>> GetAllCommentPagePost([FromQuery] string postId)
+        public IQueryable GetAllCommentPagePost([FromQuery] string postId)
         {
-            var result = await _context.CommentPagePosts.Where(p => p.postId == postId).ToListAsync();
+            var result = from c in _context.CommentPagePosts
+                        where c.postId == postId
+                        select c;
             return result;
         }
 

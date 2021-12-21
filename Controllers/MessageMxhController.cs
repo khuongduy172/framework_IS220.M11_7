@@ -22,20 +22,25 @@ namespace Social_network.Controllers
         }
 
         [HttpGet]
-        // public async Task<ActionResult<IEnumerable<Friend>>> GetAllMessageMxh()
-        // {
-        //     return await _context.Friends.ToListAsync();
-        // }
-        public async Task<ActionResult<IEnumerable<MessageMxh>>> GetAllMessageOfUser([FromQuery] int id)
+        public IQueryable GetAllMes (string userId)
         {
-            var userid = new SqlParameter("id", id);
-            var sql = $"SELECT id, receiver_id " +
-                $"FROM User_MXH U, MessageMxh MM " +
-                $"WHERE U.id = MM.receiver_id " +
-                $"AND U.id = @id;";
-            var result = await _context.MessageMxhs.FromSqlRaw(sql, userid).ToListAsync();
-            return result;
+            var me = HttpContext.User.Claims.Single(u=> u.Type == "Id").Value;
+            var query = from m in _context.MessageMxhs
+                        where m.senderId == me || m.receiverId == userId
+                        orderby m.createAt descending
+                        select m;
+            return query;
         }
+        // public async Task<ActionResult<IEnumerable<MessageMxh>>> GetAllMessageOfUser([FromQuery] int id)
+        // {
+        //     var userid = new SqlParameter("id", id);
+        //     var sql = $"SELECT id, receiver_id " +
+        //         $"FROM User_MXH U, MessageMxh MM " +
+        //         $"WHERE U.id = MM.receiver_id " +
+        //         $"AND U.id = @id;";
+        //     var result = await _context.MessageMxhs.FromSqlRaw(sql, userid).ToListAsync();
+        //     return result;
+        // }
         // [HttpPost]
         // public async Task<ActionResult<MessageMxh>> PostMessageMxh(MessageMxh message)
         // {

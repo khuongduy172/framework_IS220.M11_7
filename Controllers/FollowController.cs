@@ -22,10 +22,6 @@ namespace Social_network.Controllers
         }
 
         [HttpGet]
-        // public async Task<ActionResult<IEnumerable<Follow>>> GetAllFollow()
-        // {
-        //     return await _context.Follows.ToListAsync();
-        // }
         public async Task<ActionResult<IEnumerable<Follow>>> GetAllFollowOfUser([FromQuery] int id)
         {
             var userid = new SqlParameter("id", id);

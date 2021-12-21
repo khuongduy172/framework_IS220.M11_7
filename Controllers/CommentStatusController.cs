@@ -20,9 +20,12 @@ namespace Social_network.Controllers
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CommentStatus>>> GetCommentStatus([FromQuery] string statusId)
+    public IQueryable GetCommentStatus([FromQuery] string statusId)
     {
-      return await _context.CommentStatuses.Where(s => s.statusId == statusId).ToListAsync();
+      var query = from c in _context.CommentStatuses
+                  where c.statusId == statusId
+                  select c;
+      return query;
     }
 
     // [HttpPost]
