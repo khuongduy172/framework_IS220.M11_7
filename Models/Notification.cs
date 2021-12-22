@@ -22,7 +22,8 @@ namespace Social_network.Models
         public DateTime createAt { get; set; }
         [Column("update_at")]
         public DateTime updateAt { get; set; }
-
+        [Column("is_read")]
+        public bool isRead {get; set;}
         public UserMxh UserFrom {get;set;}
         public UserMxh UserTo {get;set;}
     }

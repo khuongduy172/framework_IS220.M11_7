@@ -39,8 +39,10 @@ namespace Social_network.Hubs
             mes.createAt = DateTime.Now;
             mes.senderId = fromId;
             mes.receiverId = toId;
+            mes.isRead = false;
 
             await Clients.Group(fromId + toId).SendAsync("ReceiveMessage", mes);
+            await Clients.Group(toId).SendAsync("MessageNotification", mes);
         }
 
         // public override Task OnDisconnectedAsync(Exception exception)
@@ -88,6 +90,7 @@ namespace Social_network.Hubs
             noti.toId = sta;
             noti.updateAt = DateTime.Now;
             noti.type = 1; // comment
+            noti.isRead = false;
             // _context.Notifications.Add(noti);
             // await _context.SaveChangesAsync();
 

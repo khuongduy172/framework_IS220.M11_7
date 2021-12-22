@@ -7,6 +7,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Social_network.Data;
 using Social_network.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Social_network.Controllers
 {
@@ -22,6 +23,7 @@ namespace Social_network.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IQueryable GetAllMes (string userId)
         {
             var me = HttpContext.User.Claims.Single(u=> u.Type == "Id").Value;
@@ -30,6 +32,42 @@ namespace Social_network.Controllers
                         orderby m.createAt descending
                         select m;
             return query;
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("get-list-mes")]
+        public IActionResult GetListMes ()
+        {
+            var me = HttpContext.User.Claims.Single(u=> u.Type == "Id").Value;
+            var query = (from m in _context.MessageMxhs
+                        where m.receiverId == me
+                        orderby m.createAt
+                        select m.senderId).Distinct().ToListAsync();
+
+            
+            return Ok(query);
+        }
+
+        [HttpPatch]
+        [Authorize]
+        [Route("read-mesage")]
+        public async Task<IActionResult> ReadMessage (string userId) 
+        {
+            try {
+                var me = HttpContext.User.Claims.Single(u=>u.Type == "Id").Value;
+                var query = (from m in _context.MessageMxhs
+                            where m.senderId == userId && m.receiverId == me
+                            select m).ToList();
+                foreach (var i in query) 
+                {
+                    i.isRead = true;
+                }
+                await _context.SaveChangesAsync();
+                return NoContent();
+            } catch {
+                return BadRequest();
+            }
         }
         // public async Task<ActionResult<IEnumerable<MessageMxh>>> GetAllMessageOfUser([FromQuery] int id)
         // {

@@ -17,7 +17,8 @@ namespace Social_network.Models
         public string content { get; set; }
         [Column("creat_at")]
         public DateTime createAt { get; set; }
-
+        [Column("is_read")]
+        public bool isRead {get; set;}
 
         // [ForeignKey("senderId")]
         public UserMxh UserSend { get; set; }

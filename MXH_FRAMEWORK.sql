@@ -45,6 +45,7 @@ create table Message_MXH (
 	receiver_id varchar(255),
 	content ntext,
 	create_at datetime,
+	is_read bit,
 	constraint PK_Message_MXH primary key(id, sender_id, receiver_id),
 )
 
@@ -132,6 +133,7 @@ CREATE TABLE Notification_MXH (
 	content ntext,
 	type_noti int,
 	postId varchar(255),
+	is_read bit,
 	create_at datetime,
 	update_at datetime,
 	CONSTRAINT PK_notification PRIMARY KEY (id),
