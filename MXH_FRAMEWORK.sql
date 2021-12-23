@@ -58,8 +58,9 @@ create table Status_MXH (
 )
 
 create table Status_image (
-	id_image nvarchar(255) constraint PK_Status_image primary key,
+	id_image int IDENTITY(1,1) constraint PK_Status_image primary key,
 	status_id varchar(255),
+	url varchar(255),
 )
 
 create table React_status (

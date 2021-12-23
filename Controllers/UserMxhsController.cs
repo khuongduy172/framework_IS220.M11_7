@@ -47,7 +47,6 @@ namespace Social_network.Controllers
                             u.isDeleted,
                             u.gender,
                         };
-            Guid g = Guid.NewGuid();
             return query;
         }
 

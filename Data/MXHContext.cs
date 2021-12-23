@@ -27,8 +27,8 @@ namespace Social_network.Data
         public DbSet<PagePostImage> PagePostImages { get; set; }
         public DbSet<ReactPagePost> ReactPagePosts { get; set; }
         public DbSet<ReactStatus> ReactStatuses { get; set; }
-        public DbSet<StatusImage> StatusImages { get; set; }
         public DbSet<StatusMxh> StatusMxhs { get; set; }
+        public DbSet<StatusImage> StatusImages { get; set; }
         public DbSet<UserLikePage> UserLikePages { get; set; }
         public DbSet<UserMxh> UserMxhs { get; set; }
         public DbSet<Notification> Notifications { get; set; }

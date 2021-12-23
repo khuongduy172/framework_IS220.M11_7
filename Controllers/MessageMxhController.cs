@@ -43,10 +43,23 @@ namespace Social_network.Controllers
             var query = (from m in _context.MessageMxhs
                         where m.receiverId == me
                         orderby m.createAt
-                        select m.senderId).Distinct().ToListAsync();
-
+                        select m.senderId).Distinct().ToList();
+            List<MessageMxh> result = new List<MessageMxh>();
+            foreach (var item in query)
+            {
+                var temp = from m in _context.MessageMxhs
+                            where m.senderId == item && m.receiverId == me
+                            select m;
+                var max = temp.Max(i => i.createAt);
+                var final = (from m in _context.MessageMxhs
+                            where m.createAt == max
+                            where m.senderId == item
+                            where m.receiverId == me
+                            select m).FirstOrDefault();
+                result.Add(final);
+            }
             
-            return Ok(query);
+            return Ok(result);
         }
 
         [HttpPatch]
