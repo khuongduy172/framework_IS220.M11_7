@@ -64,6 +64,34 @@ namespace Social_network.Controllers
             return userMxh;
         }
 
+        [HttpGet]
+        [Route("getUserMxh")]
+        public async Task<IQueryable> GetUserMXH2()
+        {
+            var query = from umxh in _context.UserMxhs
+                        select new { umxh.phone, umxh.firstName, umxh.lastName, umxh.dateOfBirth, umxh.gender};
+            return query;
+        }
+
+        [HttpPut]
+        [Route("putUserMxh")]
+        public async Task<IQueryable> PutUserMXH(UserMxh userMxh)
+        {
+            var query = from umxh in _context.UserMxhs
+                        where umxh.id == userMxh.id
+                        select umxh;
+            foreach(UserMxh umxh in query)
+            {
+                umxh.firstName = userMxh.firstName;
+                umxh.lastName = userMxh.lastName;
+                umxh.phone = userMxh.phone;
+                umxh.dateOfBirth = userMxh.dateOfBirth;
+                umxh.gender = userMxh.gender;
+            }
+            _context.SaveChanges();
+            return query;
+        }
+
         // PUT: api/UserMxhs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
