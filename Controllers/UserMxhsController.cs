@@ -73,12 +73,14 @@ namespace Social_network.Controllers
             return query;
         }
 
+        [Authorize]
         [HttpPut]
         [Route("putUserMxh")]
-        public async Task<IQueryable> PutUserMXH(UserMxh userMxh)
+        public async Task<IQueryable> PutUserMXH2(UserMxh userMxh)
         {
+            var userId = HttpContext.User.Claims.Single(u=> u.Type == "Id").Value;
             var query = from umxh in _context.UserMxhs
-                        where umxh.id == userMxh.id
+                        where umxh.id == userId
                         select umxh;
             foreach(UserMxh umxh in query)
             {
@@ -88,7 +90,7 @@ namespace Social_network.Controllers
                 umxh.dateOfBirth = userMxh.dateOfBirth;
                 umxh.gender = userMxh.gender;
             }
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return query;
         }
 
