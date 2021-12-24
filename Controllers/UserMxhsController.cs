@@ -141,6 +141,8 @@ namespace Social_network.Controllers
             newUser.gender = userMxh.gender;
             newUser.userPassword = hashedPassword;
             newUser.createdAt = DateTime.Now;
+            newUser.avatar = "https://firebasestorage.googleapis.com/v0/b/social-network-b45a2.appspot.com/o/images%2F1640339659056-avatarclone.jpg?alt=media&token=d7fe9cea-b9be-4bc5-b04f-afb03ce5784a";
+            newUser.coverImage = "https://firebasestorage.googleapis.com/v0/b/social-network-b45a2.appspot.com/o/images%2F1640339725939-anhbiaclone.jpg?alt=media&token=f477f24e-6df4-47ed-98df-9b14add330b6";
             try{
                 _context.UserMxhs.Add(newUser);
                 await _context.SaveChangesAsync();
