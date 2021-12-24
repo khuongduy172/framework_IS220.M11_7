@@ -76,22 +76,36 @@ namespace Social_network.Controllers
         [Authorize]
         [HttpPut]
         [Route("putUserMxh")]
-        public async Task<IQueryable> PutUserMXH2(UserMxh userMxh)
+        public async Task<IActionResult> PutUserMXH2(UserMxh userMxh)
         {
             var userId = HttpContext.User.Claims.Single(u=> u.Type == "Id").Value;
-            var query = from umxh in _context.UserMxhs
+            var query = (from umxh in _context.UserMxhs
                         where umxh.id == userId
-                        select umxh;
-            foreach(UserMxh umxh in query)
-            {
-                umxh.firstName = userMxh.firstName;
-                umxh.lastName = userMxh.lastName;
-                umxh.phone = userMxh.phone;
-                umxh.dateOfBirth = userMxh.dateOfBirth;
-                umxh.gender = userMxh.gender;
+                        select umxh).FirstOrDefault();
+            if(userMxh.firstName != null) {
+                query.firstName = userMxh.firstName;
             }
+            if(userMxh.lastName != null) {
+                query.lastName = userMxh.lastName;
+            }
+            if(userMxh.phone != null) {
+                query.phone = userMxh.phone;
+            }
+            if(userMxh.dateOfBirth != null) {
+                query.dateOfBirth = userMxh.dateOfBirth;
+            }
+            if(userMxh.gender != null) {
+                query.gender = userMxh.gender;
+            }
+            if(userMxh.avatar != null) {
+                query.avatar = userMxh.avatar;
+            }
+            if(userMxh.coverImage != null) {
+                query.coverImage = userMxh.coverImage;
+            }
+            
             await _context.SaveChangesAsync();
-            return query;
+            return Ok(query);
         }
 
         // PUT: api/UserMxhs/5
