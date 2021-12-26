@@ -18,7 +18,7 @@ namespace Social_network.Models
         public int type {get; set;}
         [Column("postId")]
         public string postId {get; set;}
-        [Column("creat_at")]
+        [Column("create_at")]
         public DateTime createAt { get; set; }
         [Column("update_at")]
         public DateTime updateAt { get; set; }

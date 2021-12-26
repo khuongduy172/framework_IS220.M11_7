@@ -28,8 +28,8 @@ namespace Social_network.Controllers
         {
             var me = HttpContext.User.Claims.Single(u=> u.Type == "Id").Value;
             var query = from m in _context.MessageMxhs
-                        where m.senderId == me || m.receiverId == userId
-                        orderby m.createAt descending
+                        where m.senderId == me || m.senderId == userId
+                        orderby m.createAt ascending
                         select m;
             return query;
         }
@@ -41,24 +41,31 @@ namespace Social_network.Controllers
         {
             var me = HttpContext.User.Claims.Single(u=> u.Type == "Id").Value;
             var query = (from m in _context.MessageMxhs
-                        where m.receiverId == me
-                        orderby m.createAt
+                        where m.receiverId == me && m.isRead == false
+                        orderby m.createAt descending
                         select m.senderId).Distinct().ToList();
-            List<MessageMxh> result = new List<MessageMxh>();
+            List<object> result = new List<object>();
             foreach (var item in query)
             {
-                var temp = from m in _context.MessageMxhs
+                var temp = (from m in _context.MessageMxhs
                             where m.senderId == item && m.receiverId == me
-                            select m;
-                var max = temp.Max(i => i.createAt);
-                var final = (from m in _context.MessageMxhs
-                            where m.createAt == max
-                            where m.senderId == item
-                            where m.receiverId == me
+                            orderby m.createAt descending
                             select m).FirstOrDefault();
-                result.Add(final);
+                var user = (from u in _context.UserMxhs
+                            where u.id == item
+                            select u).FirstOrDefault();
+                result.Add(new {
+                    temp.content,
+                    temp.createAt,
+                    temp.id,
+                    temp.isRead,
+                    temp.receiverId,
+                    temp.senderId,
+                    user.avatar,
+                    user.firstName,
+                    user.lastName,
+                });
             }
-            
             return Ok(result);
         }
 

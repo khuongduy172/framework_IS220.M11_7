@@ -13,9 +13,9 @@ namespace Social_network.Models
         public string senderId { get; set; }
         [Column("receiver_id")]
         public string receiverId { get; set; }
-        [Column("[content]")]
+        [Column("content")]
         public string content { get; set; }
-        [Column("creat_at")]
+        [Column("create_at")]
         public DateTime createAt { get; set; }
         [Column("is_read")]
         public bool isRead {get; set;}

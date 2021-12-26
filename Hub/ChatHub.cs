@@ -41,6 +41,9 @@ namespace Social_network.Hubs
             mes.receiverId = toId;
             mes.isRead = false;
 
+            _context.MessageMxhs.Add(mes);
+            await _context.SaveChangesAsync();
+
             await Clients.Group(fromId + toId).SendAsync("ReceiveMessage", mes);
             await Clients.Group(toId).SendAsync("MessageNotification", mes);
         }

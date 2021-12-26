@@ -21,16 +21,36 @@ namespace Social_network.Controllers
         {
             _context = context;
         }
-
+        [Authorize]
         [HttpGet]
-        public IQueryable GetAllNoti ()
+        public async Task<IActionResult> GetAllNoti ()
         {
             var me = HttpContext.User.Claims.Single(u=> u.Type == "Id").Value;
-            var query = from m in _context.Notifications
+            var query = await (from m in _context.Notifications
                         where m.toId == me
                         orderby m.createAt descending
-                        select m;
-            return query;
+                        select m).ToListAsync();
+            List<object> result = new List<object>();
+            foreach (var item in query)
+            {
+                var user = (from u in _context.UserMxhs
+                            where u.id == item.fromId
+                            select u).FirstOrDefault();
+                result.Add(new {
+                    content = item.content,
+                    statusId = item.postId,
+                    fromId = item.fromId,
+                    createAt = item.createAt,
+                    updateAt = item.updateAt,
+                    id = item.id,
+                    isRead = item.isRead,
+                    type = item.type,
+                    user.avatar,
+                    user.firstName,
+                    user.lastName,
+                });
+            }
+            return Ok(result);
         }
         [HttpPatch]
         [Authorize]
