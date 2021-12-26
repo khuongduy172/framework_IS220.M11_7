@@ -91,7 +91,7 @@ namespace Social_network.Controllers
             if(userMxh.phone != null) {
                 query.phone = userMxh.phone;
             }
-            if(userMxh.dateOfBirth != null) {
+            if(userMxh.dateOfBirth != null && userMxh.coverImage == null && userMxh.avatar == null) {
                 query.dateOfBirth = userMxh.dateOfBirth;
             }
             if(userMxh.gender != null) {
