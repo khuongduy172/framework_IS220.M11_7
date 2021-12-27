@@ -33,12 +33,38 @@ namespace Social_network.Controllers
 
     [HttpGet]
     [Route("get-all-by-userid")]
-    public IQueryable GetAllByUserId (string userId) 
+    public async Task<IActionResult> GetAllByUserId (string userId) 
     {
-      var query = from s in _context.StatusMxhs
+      var query = await (from s in _context.StatusMxhs
+                  join u in _context.UserMxhs on s.ownerId equals u.id
                   where s.ownerId == userId
-                  select s;
-      return query;
+                  select new {
+                    content = s.content,
+                    createAt = s.createAt,
+                    statusId = s.statusId,
+                    ownerId = s.ownerId,
+                    updateAt = s.updateAt,
+                  }).ToListAsync();
+      List<object> result = new List<object>();
+      foreach (var item in query)
+      {
+          var images = await (from i in _context.StatusImages
+                      where i.statusId == item.statusId
+                      select i).ToListAsync();
+          var user = (from u in _context.UserMxhs
+                    where u.id == item.ownerId
+                    select u).FirstOrDefault();
+          result.Add(new {
+              content = item.content,
+              createAt = item.createAt,
+              statusId = item.statusId,
+              ownerId = item.ownerId,
+              updateAt = item.updateAt,
+              images = images,
+              user = user,
+          });
+      }
+      return Ok(result);
     }
 
     [HttpGet]
