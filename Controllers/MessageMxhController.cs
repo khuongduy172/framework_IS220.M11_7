@@ -28,7 +28,7 @@ namespace Social_network.Controllers
         {
             var me = HttpContext.User.Claims.Single(u=> u.Type == "Id").Value;
             var query = from m in _context.MessageMxhs
-                        where m.senderId == me || m.senderId == userId
+                        where (m.senderId == me && m.receiverId == userId) || (m.senderId == userId && m.receiverId == me)
                         orderby m.createAt ascending
                         select m;
             return query;

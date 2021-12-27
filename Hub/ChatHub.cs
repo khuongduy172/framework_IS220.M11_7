@@ -45,7 +45,23 @@ namespace Social_network.Hubs
             await _context.SaveChangesAsync();
 
             await Clients.Group(fromId + toId).SendAsync("ReceiveMessage", mes);
-            await Clients.Group(toId).SendAsync("MessageNotification", mes);
+
+            var user = (from u in _context.UserMxhs
+                        where u.id == mes.senderId
+                        select u).FirstOrDefault();
+            var mesNoti = new {
+                mes.content,
+                mes.createAt,
+                mes.id,
+                mes.isRead,
+                mes.receiverId,
+                mes.senderId,
+                user.avatar,
+                user.firstName,
+                user.lastName,
+            };
+            
+            await Clients.Group(toId).SendAsync("MessageNotification", mesNoti);
         }
 
         // public override Task OnDisconnectedAsync(Exception exception)
@@ -100,5 +116,39 @@ namespace Social_network.Hubs
             await Clients.Group(statusId.ToString()).SendAsync("ReceiveComment", cmt);
             await Clients.Group(sta.ToString()).SendAsync("Notification", noti);
         }
+
+        public async Task AddFriend (string me, string friendId) 
+        {
+            var noti = new Notification();
+            var user = (from u in _context.UserMxhs
+                        where u.id == me
+                        select u).FirstOrDefault();
+            noti.content = $"{user.lastName} {user.firstName} đã gửi lời mời kết bạn.";
+            noti.createAt = DateTime.Now;
+            noti.fromId = me;
+            noti.postId = null;
+            noti.toId = friendId;
+            noti.updateAt = DateTime.Now;
+            noti.type = 2; // add friend
+            noti.isRead = false;
+            noti.UserFrom = user;
+            _context.Notifications.Add(noti);
+            await _context.SaveChangesAsync();
+            var noti2 = new {
+                content = noti.content,
+                statusId = noti.postId,
+                fromId = noti.fromId,
+                createAt = noti.createAt,
+                updateAt = noti.updateAt,
+                toId = noti.toId,
+                // id = noti.id,
+                isRead = noti.isRead,
+                type = noti.type,
+                user.avatar,
+                user.firstName,
+                user.lastName,
+            };
+            await Clients.Group(friendId).SendAsync("Notification", noti2);
+        } 
     }
 }

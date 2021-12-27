@@ -42,6 +42,7 @@ namespace Social_network
                 option.AddPolicy(name: "allowedcors", builder => {
                     builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                     builder.WithOrigins("https://social-network-is220.vercel.app").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                    builder.WithOrigins("http://192.168.1.6:3000").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                 });
             });
 
