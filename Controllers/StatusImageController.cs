@@ -24,23 +24,39 @@ namespace Social_network.Controllers
             _context = context;
         }
         [HttpGet]
-        public IActionResult GetStatusImage([FromQuery] string statusId)
+        public IQueryable GetStatusImage([FromQuery] string statusId)
         {
-          var query = (from i in _context.StatusImages
-                      where i.statusId == statusId
-                      select i).FirstOrDefault();
-          return Ok(query);
+            var query = from i in _context.StatusImages
+                         where i.statusId == statusId
+                         select i;
+            return query;
+        }
+        
+        [HttpGet]
+        [Route("get-all")]
+        public IQueryable GetAllStatusImage()
+        {
+            var query = from i in _context.StatusImages
+                         select i;
+            return query;
         }
 
         [HttpPost]
         public async Task<IActionResult> StatusImage(StatusImage statusImage)
         {
-            try {
-              _context.StatusImages.Add(statusImage);
-              await _context.SaveChangesAsync();
-              return Ok(statusImage);
-            } catch {
-              return BadRequest();
+            try
+            {
+                StatusImage newStatusImage = new StatusImage();
+                newStatusImage.statusId = statusImage.statusId;
+                newStatusImage.url = statusImage.url;
+
+                _context.StatusImages.Add(newStatusImage);
+                await _context.SaveChangesAsync();
+                return Ok(newStatusImage);
+            }
+            catch
+            {
+                return BadRequest();
             }
         }
 
