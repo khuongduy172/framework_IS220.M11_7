@@ -118,12 +118,14 @@ namespace Social_network.Controllers
     public IQueryable GetRandomStatus ()
     {
         var me = HttpContext.User.Claims.Single(u => u.Type == "Id").Value;
-        var idList = (from fl in _context.Follows
+        var idList = ((from fl in _context.Follows
                       where fl.userId == me
                       select fl.followerId)
                       .Union(from fr in _context.Friends
                               where fr.userId == me
-                              select fr.friendId);
+                              select fr.friendId)).Union(from u in _context.UserMxhs
+                                                          where u.id == me
+                                                          select u.id);
         var query = from s in _context.StatusMxhs
                     where idList.Contains(s.ownerId)
                     orderby s.createAt descending
