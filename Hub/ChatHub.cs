@@ -150,5 +150,20 @@ namespace Social_network.Hubs
             };
             await Clients.Group(friendId).SendAsync("Notification", noti2);
         } 
+
+        public async Task callUser (VideoModel data) 
+        {
+            await Clients.Group(data.toId).SendAsync("callUser", data);
+        }
+
+        public async Task answerCall (AnswerCallModel data) 
+        {
+            await Clients.Group(data.toId).SendAsync("callAccepted", data.signal);
+        }
+
+        public async Task endCall (string toId) 
+        {
+            await Clients.Group(toId).SendAsync("callEnded");
+        }
     }
 }
