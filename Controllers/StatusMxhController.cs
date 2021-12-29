@@ -103,19 +103,10 @@ namespace Social_network.Controllers
       return Ok(result);
     }
 
-    // [HttpGet]
-    // [Route("get-all")]
-    // public IQueryable GetAll()
-    // {
-    //   var query = from s in _context.StatusMxhs
-    //               select s;
-    //   return query;
-    // }
-
     [HttpGet]
     [Route("get-random-status")]
     [Authorize]
-    public IQueryable GetRandomStatus ()
+    public async Task<IActionResult> GetRandomStatus ()
     {
         var me = HttpContext.User.Claims.Single(u => u.Type == "Id").Value;
         var idList = ((from fl in _context.Follows
@@ -126,11 +117,77 @@ namespace Social_network.Controllers
                               select fr.friendId)).Union(from u in _context.UserMxhs
                                                           where u.id == me
                                                           select u.id);
-        var query = from s in _context.StatusMxhs
+        var query = await (from s in _context.StatusMxhs
                     where idList.Contains(s.ownerId)
                     orderby s.createAt descending
-                    select s;
-        return query;
+                    select new {
+                      content = s.content,
+                      createAt = s.createAt,
+                      statusId = s.statusId,  
+                      ownerId = s.ownerId,
+                      updateAt = s.updateAt,
+                    }).ToListAsync();
+        List<object> result = new List<object>();
+      foreach (var item in query)
+      {
+          var images = await (from i in _context.StatusImages
+                      where i.statusId == item.statusId
+                      select i.url).ToListAsync();
+          var user = (from u in _context.UserMxhs
+                    where u.id == item.ownerId
+                    select u).FirstOrDefault();
+          result.Add(new {
+              content = item.content,
+              createAt = item.createAt,
+              statusId = item.statusId,
+              ownerId = item.ownerId,
+              updateAt = item.updateAt,
+              images = images,
+              user = user,
+          });
+      }
+      return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("get-random-status-of-user")]
+    [Authorize]
+    public async Task<IActionResult> GetRandomStatus2 ()
+    {
+        var me = HttpContext.User.Claims.Single(u => u.Type == "Id").Value;
+        var idList = (from u in _context.UserMxhs
+                      where u.id == me
+                      select u.id);
+        var query = await (from s in _context.StatusMxhs
+                    where idList.Contains(s.ownerId)
+                    orderby s.createAt descending
+                    select new {
+                      content = s.content,
+                      createAt = s.createAt,
+                      statusId = s.statusId,  
+                      ownerId = s.ownerId,
+                      updateAt = s.updateAt,
+                    }).ToListAsync();
+        List<object> result = new List<object>();
+      foreach (var item in query)
+      {
+          var images = await (from i in _context.StatusImages
+                      where i.statusId == item.statusId
+                      select i.url).ToListAsync();
+          var user = (from u in _context.UserMxhs
+                    where u.id == item.ownerId
+                    select u).FirstOrDefault();
+          result.Add(new {
+              content = item.content,
+              createAt = item.createAt,
+              statusId = item.statusId,
+              ownerId = item.ownerId,
+              updateAt = item.updateAt,
+              images = images,
+              user = user,
+          });
+      }
+      return Ok(result);
     }
 
     [HttpPost]
