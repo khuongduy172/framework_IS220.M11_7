@@ -25,10 +25,29 @@ namespace Social_network.Controllers
 
     [HttpGet]
     [Route("get-by-id")]
-    public async Task<ActionResult<IEnumerable<StatusMxh>>> GetStatusMxh([FromQuery] string statusId)
+    public async Task<IActionResult> GetStatusMxh([FromQuery] string statusId)
     {
-      // var friendId = from f in _context.Friends
-      return await _context.StatusMxhs.Where(s => s.statusId == statusId).ToListAsync();
+      var status = (from s in _context.StatusMxhs
+                    where s.statusId == statusId
+                    select s).FirstOrDefault();
+      var image = await (from i in _context.StatusImages
+                  where i.statusId == statusId
+                  select i).ToListAsync();
+      var user = (from u in _context.UserMxhs
+                  where u.id == status.ownerId
+                  select u).FirstOrDefault();
+      var result = new {
+        status.content,
+        status.createAt,
+        status.ownerId,
+        status.statusId,
+        status.updateAt,
+        // image = image,
+        user.avatar,
+        user.firstName,
+        user.lastName,
+      };
+      return Ok(result);
     }
 
     [HttpGet]
