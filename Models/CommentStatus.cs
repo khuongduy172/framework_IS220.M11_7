@@ -22,10 +22,10 @@ namespace Social_network.Models
     [Column("create_at")]
     public DateTime createAt {get; set;}
 
-    [Column("upadate_at")]
+    [Column("update_at")]
     public DateTime updateAt {get; set;}
 
-    [Column("[content]")]
+    [Column("content")]
     public string content {get; set;}
 
 
