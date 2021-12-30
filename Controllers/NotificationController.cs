@@ -72,5 +72,22 @@ namespace Social_network.Controllers
                 return BadRequest();
             }
         }
+
+        [Authorize]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAllNotification () 
+        {
+            var me = HttpContext.User.Claims.Single(u=>u.Type == "Id").Value;
+            var noti = await (from n in _context.Notifications
+                            where n.toId == me
+                            select n).ToListAsync();
+            foreach( var i in noti) 
+            {
+                _context.Notifications.Remove(i);
+            }
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }

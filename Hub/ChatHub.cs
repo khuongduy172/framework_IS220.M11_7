@@ -296,7 +296,7 @@ namespace Social_network.Hubs
                 noti.content = $"{user.lastName} {user.firstName} đã bày tỏ cảm xúc về bài viết của bạn.";
                 noti.createAt = DateTime.Now;
                 noti.fromId = me;
-                noti.postId = null;
+                noti.postId = statusId;
                 noti.toId = status.ownerId;
                 noti.updateAt = DateTime.Now;
                 noti.type = 3; // react
