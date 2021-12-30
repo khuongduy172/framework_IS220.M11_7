@@ -263,6 +263,85 @@ namespace Social_network.Hubs
             await Clients.Group(friendId).SendAsync("Notification", noti2);
         } 
 
+        public async Task React (string me, string statusId) 
+        {
+            var react = await (from r in _context.ReactStatuses
+                            where r.statusId == statusId
+                            select r).ToListAsync();
+            List<object> result = new List<object>();
+            foreach( var item in react)
+            {
+                var user1 = (from u in _context.UserMxhs
+                            where u.id == item.userId
+                            select u).FirstOrDefault();
+                result.Add(new {
+                item.reactType,
+                item.statusId,
+                item.userId,
+                user1.firstName,
+                user1.lastName,
+                });
+            }
+            await Clients.Group(statusId).SendAsync("ReceiveReact", result);
+            var status = (from s in _context.StatusMxhs
+                        where s.statusId == statusId
+                        select s).FirstOrDefault();
+            if (me != status.ownerId) 
+            {
+                var noti = new Notification();
+                var user = (from u in _context.UserMxhs
+                            where u.id == me
+                            select u).FirstOrDefault();
+                
+                noti.content = $"{user.lastName} {user.firstName} đã bày tỏ cảm xúc về bài viết của bạn.";
+                noti.createAt = DateTime.Now;
+                noti.fromId = me;
+                noti.postId = null;
+                noti.toId = status.ownerId;
+                noti.updateAt = DateTime.Now;
+                noti.type = 3; // react
+                noti.isRead = false;
+                noti.UserFrom = user;
+                _context.Notifications.Add(noti);
+                await _context.SaveChangesAsync();
+                var noti2 = new {
+                    content = noti.content,
+                    statusId = noti.postId,
+                    fromId = noti.fromId,
+                    createAt = noti.createAt,
+                    updateAt = noti.updateAt,
+                    toId = noti.toId,
+                    // id = noti.id,
+                    isRead = noti.isRead,
+                    type = noti.type,
+                    user.avatar,
+                    user.firstName,
+                    user.lastName,
+                };
+                await Clients.Group(status.ownerId).SendAsync("Notification", noti2);
+            }
+        } 
+        public async Task UnReact (string statusId)
+        {
+            var react = await (from r in _context.ReactStatuses
+                            where r.statusId == statusId
+                            select r).ToListAsync();
+            List<object> result = new List<object>();
+            foreach( var item in react)
+            {
+                var user1 = (from u in _context.UserMxhs
+                            where u.id == item.userId
+                            select u).FirstOrDefault();
+                result.Add(new {
+                item.reactType,
+                item.statusId,
+                item.userId,
+                user1.firstName,
+                user1.lastName,
+                });
+            }
+            await Clients.Group(statusId).SendAsync("ReceiveReact", result);
+        }
         public async Task callUser (VideoModel data) 
         {
             await Clients.Group(data.toId).SendAsync("callUser", data);

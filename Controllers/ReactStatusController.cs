@@ -7,23 +7,89 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Social_network.Data;
 using Social_network.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Social_network.Controllers 
 {
-
+  [Route("api/[controller]")]
+  [ApiController]
   public class ReactStatusController : ControllerBase
   {
     private readonly MXHContext _context;
     public ReactStatusController(MXHContext context)
     {
-      var _context = context;
+      _context = context;
     }
 
-    // [HttpGet]
-    // public async Task<ActionResult<IEnumerable<ReactStatus>>> GetReactStatus([FromQuery] string statusId)
-    // {
-    //   return await _context.ReactStatuses.Where(s => s.statusId == statusId).ToListAsync();
-    // }
+    [HttpGet]
+    public async Task<IActionResult> GetReactStatus([FromQuery] string statusId)
+    {
+      var react = await (from r in _context.ReactStatuses
+                    where r.statusId == statusId
+                    select r).ToListAsync();
+      List<object> result = new List<object>();
+      foreach( var item in react)
+      {
+        var user = (from u in _context.UserMxhs
+                    where u.id == item.userId
+                    select u).FirstOrDefault();
+        result.Add(new {
+          item.reactType,
+          item.statusId,
+          item.userId,
+          user.firstName,
+          user.lastName,
+        });
+      }
+      
+      return Ok(result);
+    }
+
+    [Authorize]
+    [HttpGet]
+    [Route("check-react")]
+    public bool CheckReact (string statusId)
+    {
+      var me = HttpContext.User.Claims.Single(u => u.Type == "Id").Value;
+      var query = (from r in _context.ReactStatuses
+                  where r.userId == me && r.statusId == statusId
+                  select r.userId).Contains(me);
+      return query;
+    }
+
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> React (string type, string statusId)
+    {
+      var me = HttpContext.User.Claims.Single(u => u.Type == "Id").Value;
+      var exist = (from r in _context.ReactStatuses
+                  where r.statusId == statusId && r.userId == me
+                  select r).FirstOrDefault();
+      if (exist != null) 
+      {
+        _context.ReactStatuses.Remove(exist);
+        await _context.SaveChangesAsync();
+        if (type != exist.reactType) 
+        {
+          var newReact = new ReactStatus();
+          newReact.reactType = type;
+          newReact.statusId = statusId;
+          newReact.userId = me;
+          _context.ReactStatuses.Add(newReact);
+          await _context.SaveChangesAsync();
+      }
+      }
+      if (exist is null) 
+      {
+        var newReact = new ReactStatus();
+        newReact.reactType = type;
+        newReact.statusId = statusId;
+        newReact.userId = me;
+        _context.ReactStatuses.Add(newReact);
+        await _context.SaveChangesAsync();
+      }
+      return NoContent();
+    }
 
     // [HttpPost]
     // public async Task<ActionResult<ReactStatus>> ReactStatus(ReactStatus reactStatus)
