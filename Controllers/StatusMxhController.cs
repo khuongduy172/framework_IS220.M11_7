@@ -249,16 +249,51 @@ namespace Social_network.Controllers
     }
 
     [HttpDelete]
-    public async Task<IActionResult> DeleteStatusMxh( [FromQuery] int ownerId, [FromQuery] int statusId)
+    public async Task<IActionResult> DeleteStatusMxh([FromQuery] string statusId)
     {
-      var react = await _context.StatusMxhs.FindAsync(ownerId, statusId);
-      if (react == null)
+      var image = await (from i in _context.StatusImages
+                   where i.statusId == statusId
+                   select i).ToListAsync();
+      foreach (var item in image)
       {
-        return NotFound();
+        var imageItem = (from it in image
+                         select it).FirstOrDefault();
+        _context.StatusImages.Remove(imageItem);
+        await _context.SaveChangesAsync();
       }
 
-      _context.StatusMxhs.Remove(react);
-      await _context.SaveChangesAsync();
+      // var react = await (from i in _context.ReactStatuses
+      //              where i.statusId == statusId
+      //              select i).ToListAsync();
+      // foreach (var item in react)
+      // {
+      //   var reactItem = (from it in react
+      //                    select it).FirstOrDefault();
+      //   _context.ReactStatuses.Remove(reactItem);
+      //   await _context.SaveChangesAsync();
+      // }
+
+      var comment = await (from i in _context.CommentStatuses
+                   where i.statusId == statusId
+                   select i).ToListAsync();
+      foreach (var item in comment)
+      {
+        var cmtItem = (from it in comment
+                         select it).FirstOrDefault();
+        _context.CommentStatuses.Remove(cmtItem);
+        await _context.SaveChangesAsync();
+      }
+
+      var status = await (from i in _context.StatusMxhs
+                   where i.statusId == statusId
+                   select i).ToListAsync();
+      foreach (var item in status)
+      {
+        var sttItem = (from it in status
+                         select it).FirstOrDefault();
+        _context.StatusMxhs.Remove(sttItem);
+        await _context.SaveChangesAsync();
+      }
       return NoContent();
     }
   }

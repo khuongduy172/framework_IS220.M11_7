@@ -24,12 +24,16 @@ namespace Social_network.Controllers
             _context = context;
         }
         [HttpGet]
-        public IQueryable GetStatusImage([FromQuery] string statusId)
+        public async Task<IActionResult> GetStatusImage([FromQuery] string statusId)
         {
-            var query = from i in _context.StatusImages
+            var query = await (from i in _context.StatusImages
                          where i.statusId == statusId
-                         select i;
-            return query;
+                         select i).ToListAsync();
+            List<object> result = new List<object>();
+            foreach (var item in query) {
+                result.Add(item);
+            }
+            return Ok(result);
         }
         
         [HttpGet]
