@@ -79,10 +79,27 @@ namespace Social_network.Controllers
         // }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteStatusImage( [FromQuery] string statusId)
+        public async Task<IActionResult> DeleteAllStatusImageById( [FromQuery] string statusId)
         {
             var image = await (from i in _context.StatusImages
                                 where i.statusId == statusId
+                                select i).ToListAsync();
+            foreach (var item in image)
+            {
+                var imageItem = (from it in image
+                                select it).FirstOrDefault();
+                _context.StatusImages.Remove(imageItem);
+                await _context.SaveChangesAsync();
+            }
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("delete-by-url")]
+        public async Task<IActionResult> DeleteStatusImageByUrl(string url)
+        {
+            var image = await (from i in _context.StatusImages
+                                where i.url == url
                                 select i).ToListAsync();
             foreach (var item in image)
             {

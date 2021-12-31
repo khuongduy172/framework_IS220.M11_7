@@ -231,22 +231,23 @@ namespace Social_network.Controllers
     }
     [Authorize]
     [HttpPut]
-    public async Task<IActionResult> PutStatusMxh([FromQuery] string statusId, [FromQuery] string content)
+    public async Task<IActionResult> PutStatusMxh([FromQuery]string statusId,[FromQuery]string content)
     {
       var me = HttpContext.User.Claims.Single(u => u.Type == "Id").Value;
 
       var query = (from smxh in _context.StatusMxhs
                         where smxh.statusId == statusId
                         select smxh).FirstOrDefault();
-      query.content = content;
+      if (content != null) {
+        query.content = content;
+      }
       query.updateAt = DateTime.Now;
       if (me == query.ownerId) {
-        await _context.SaveChangesAsync();
-        return Ok(query);
+      await _context.SaveChangesAsync();
+      return Ok(query);
       } else {
         return BadRequest();
       }
-
     }
     [Authorize]
     [HttpDelete]
