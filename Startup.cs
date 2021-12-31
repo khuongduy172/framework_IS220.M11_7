@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -47,7 +48,11 @@ namespace Social_network
             });
 
             services.AddDbContext<MXHContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            {
+                var conn = Configuration.GetConnectionString("Mysql");
+                options.UseMySql(conn, ServerVersion.AutoDetect(conn));
+                // options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            });
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option => 
             {
                 option.RequireHttpsMetadata = false;
