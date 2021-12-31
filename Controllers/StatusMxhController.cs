@@ -231,21 +231,17 @@ namespace Social_network.Controllers
     }
 
     [HttpPut]
-    public async Task<IActionResult> PutStatusMxh( [FromQuery] string ownerId, [FromQuery] string statusId, StatusMxh statusMxh)
+    public async Task<IActionResult> PutStatusMxh([FromQuery] string statusId, [FromQuery] string content)
     {
-      if (ownerId != statusMxh.ownerId && statusId != statusMxh.statusId)
-      {
-        return BadRequest();
-      }
+      var query = (from smxh in _context.StatusMxhs
+                        where smxh.statusId == statusId
+                        select smxh).FirstOrDefault();
+      query.content = content;
+      query.createAt = DateTime.Now;
+      query.updateAt = DateTime.Now;
 
-      var check = await _context.StatusMxhs.FindAsync(statusId, ownerId);
-      if (check == null)
-      {
-        return NotFound();
-      }
-
-      _context.Entry(statusMxh).State = EntityState.Modified;
-        return NoContent();
+      await _context.SaveChangesAsync();
+      return Ok(query);
     }
 
     [HttpDelete]
@@ -261,7 +257,7 @@ namespace Social_network.Controllers
         _context.StatusImages.Remove(imageItem);
         await _context.SaveChangesAsync();
       }
-
+  
       // var react = await (from i in _context.ReactStatuses
       //              where i.statusId == statusId
       //              select i).ToListAsync();
