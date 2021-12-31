@@ -41,7 +41,7 @@ namespace Social_network.Controllers
         {
             var me = HttpContext.User.Claims.Single(u=> u.Type == "Id").Value;
             var query = (from m in _context.MessageMxhs
-                        where m.receiverId == me && m.isRead == false
+                        where m.receiverId == me // && m.isRead == false
                         orderby m.createAt descending
                         select m.senderId).Distinct().ToList();
             List<object> result = new List<object>();
