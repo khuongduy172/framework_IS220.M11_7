@@ -229,68 +229,84 @@ namespace Social_network.Controllers
         return BadRequest();
       }
     }
-
+    [Authorize]
     [HttpPut]
     public async Task<IActionResult> PutStatusMxh([FromQuery] string statusId, [FromQuery] string content)
     {
+      var me = HttpContext.User.Claims.Single(u => u.Type == "Id").Value;
+
       var query = (from smxh in _context.StatusMxhs
                         where smxh.statusId == statusId
                         select smxh).FirstOrDefault();
       query.content = content;
-      query.createAt = DateTime.Now;
       query.updateAt = DateTime.Now;
+      if (me == query.ownerId) {
+        await _context.SaveChangesAsync();
+        return Ok(query);
+      } else {
+        return BadRequest();
+      }
 
-      await _context.SaveChangesAsync();
-      return Ok(query);
     }
-
+    [Authorize]
     [HttpDelete]
     public async Task<IActionResult> DeleteStatusMxh([FromQuery] string statusId)
     {
-      var image = await (from i in _context.StatusImages
+      var me = HttpContext.User.Claims.Single(u => u.Type == "Id").Value;
+      var status1 = (from i in _context.StatusMxhs
                    where i.statusId == statusId
-                   select i).ToListAsync();
-      foreach (var item in image)
-      {
-        var imageItem = (from it in image
-                         select it).FirstOrDefault();
-        _context.StatusImages.Remove(imageItem);
-        await _context.SaveChangesAsync();
-      }
-  
-      // var react = await (from i in _context.ReactStatuses
-      //              where i.statusId == statusId
-      //              select i).ToListAsync();
-      // foreach (var item in react)
-      // {
-      //   var reactItem = (from it in react
-      //                    select it).FirstOrDefault();
-      //   _context.ReactStatuses.Remove(reactItem);
-      //   await _context.SaveChangesAsync();
-      // }
+                   select i).FirstOrDefault();
+      if (me == status1.ownerId) {
+        var image = await (from i in _context.StatusImages
+                    where i.statusId == statusId
+                    select i).ToListAsync();
+        foreach (var item in image)
+        {
+          var imageItem = (from it in image
+                          select it).FirstOrDefault();
+          _context.StatusImages.Remove(imageItem);
+          // await _context.SaveChangesAsync();
+        }
+    
+        var react = await (from i in _context.ReactStatuses
+                     where i.statusId == statusId
+                     select i).ToListAsync();
+        foreach (var item in react)
+        {
+          var reactItem = (from it in react
+                           select it).FirstOrDefault();
+          _context.ReactStatuses.Remove(reactItem);
+          // await _context.SaveChangesAsync();
+        }
 
-      var comment = await (from i in _context.CommentStatuses
-                   where i.statusId == statusId
-                   select i).ToListAsync();
-      foreach (var item in comment)
-      {
-        var cmtItem = (from it in comment
-                         select it).FirstOrDefault();
-        _context.CommentStatuses.Remove(cmtItem);
+        var comment = await (from i in _context.CommentStatuses
+                    where i.statusId == statusId
+                    select i).ToListAsync();
+        foreach (var item in comment)
+        {
+          var cmtItem = (from it in comment
+                          select it).FirstOrDefault();
+          _context.CommentStatuses.Remove(cmtItem);
+          // await _context.SaveChangesAsync();
+        }
+
+        var status = await (from i in _context.StatusMxhs
+                    where i.statusId == statusId
+                    select i).ToListAsync();
+        foreach (var item in status)
+        {
+          var sttItem = (from it in status
+                          select it).FirstOrDefault();
+          _context.StatusMxhs.Remove(sttItem);
+        }
+
         await _context.SaveChangesAsync();
+        return NoContent();
+
+      } else {
+        return BadRequest();
       }
 
-      var status = await (from i in _context.StatusMxhs
-                   where i.statusId == statusId
-                   select i).ToListAsync();
-      foreach (var item in status)
-      {
-        var sttItem = (from it in status
-                         select it).FirstOrDefault();
-        _context.StatusMxhs.Remove(sttItem);
-        await _context.SaveChangesAsync();
-      }
-      return NoContent();
     }
   }
 }
