@@ -64,38 +64,34 @@ namespace Social_network.Controllers
             }
         }
 
-        [HttpPut]
-        public async Task<IActionResult> PutStatusImage(  [FromQuery] string statusId, StatusImage statusImage)
-        {
-          if (statusId != statusImage.statusId)
-          {
-            return BadRequest();
-          }
+        // [HttpPut]
+        // public async Task<IActionResult> PutStatusImage(  [FromQuery] string statusId, string url)
+        // {
+        //     var query = (from simg in _context.StatusImages
+        //                 where simg.statusId == statusId
+        //                 select simg).FirstOrDefault();
+        //     query.content = content;
+        //     query.createAt = DateTime.Now;
+        //     query.updateAt = DateTime.Now;
 
-          var check = await _context.StatusImages.FindAsync(statusId);
-          if (check == null)
-          {
-            return NotFound();
-          }
-
-          _context.Entry(statusImage).State = EntityState.Modified;
-            return NoContent();
-        }
+        //     await _context.SaveChangesAsync();
+        //     return Ok(query);
+        // }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteStatusImage( [FromQuery] string statusId, string image)
+        public async Task<IActionResult> DeleteStatusImage( [FromQuery] string statusId)
         {
-          var react = await _context.StatusImages.FindAsync(image, statusId);
-                if (react == null)
-                {
-                    return NotFound();
-                }
-
-                // _context.StatusImages.Remove(react);
-                // await _context.SaveChangesAsync();
-
-                // return NoContent();
-                return Ok(react);
+            var image = await (from i in _context.StatusImages
+                                where i.statusId == statusId
+                                select i).ToListAsync();
+            foreach (var item in image)
+            {
+                var imageItem = (from it in image
+                                select it).FirstOrDefault();
+                _context.StatusImages.Remove(imageItem);
+                await _context.SaveChangesAsync();
+            }
+            return NoContent();
         }
     }
 }
