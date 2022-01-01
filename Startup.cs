@@ -44,6 +44,7 @@ namespace Social_network
                     builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                     builder.WithOrigins("https://social-network-is220.vercel.app").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                     builder.WithOrigins("https://social-network-uit.netlify.app").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                    builder.WithOrigins("https://social-network-fe.herokuapp.com").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                     builder.WithOrigins("http://192.168.1.2:3000").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
                 });
             });
